@@ -3,10 +3,9 @@ import { Link, useLocation } from "react-router-dom";
 import "./Navbar.scss";
 
 function Navbar() {
-  const [active, setActive] = useState(false);
-  const [open, setOpen] = useState(false);
-
-  const { pathname } = useLocation();
+  const [active, setActive] = useState(false); //state for activating the navbar while scrolling.
+  const [open, setOpen] = useState(false);    //to open the profile dropdown.
+  const { pathname } = useLocation();        //to recognize the location.
 
   const isActive = () => {
     window.scrollY > 0 ? setActive(true) : setActive(false);
@@ -18,6 +17,7 @@ function Navbar() {
       window.removeEventListener("scroll", isActive);
     };
   }, []);
+
 
   // const currentUser = null
 
