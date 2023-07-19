@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import "./GigCard.scss";
 
 //passed the prop
-const GigCard = ({ item }) => {
+function GigCard({ item }) {
   return (
-    <Link to="/gig/123">
+    <Link to="/gig/123" className="link">
       <div className="gigCard">
         <img src={item.img} alt="" />
         <div className="info">
@@ -30,6 +30,6 @@ const GigCard = ({ item }) => {
       </div>
     </Link>
   );
-};
+}
 
 export default GigCard;

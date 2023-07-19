@@ -1,8 +1,9 @@
 .gigCard{
     width: 324px;
     height: 370px;
-    border: 1px solid lightgray;
+    border: 1px solid rgb(239, 238, 238);
     margin-bottom: 25px;
+    margin-top: 80px;
 
     img{
         width: 100%;
@@ -50,7 +51,7 @@
     }
     hr{
         height: 0;
-        border: 0.5px solid lightgrey;
+        border: 0.5px solid  rgb(239, 238, 238);
     }
     .details{
         padding: 10px 20px;
