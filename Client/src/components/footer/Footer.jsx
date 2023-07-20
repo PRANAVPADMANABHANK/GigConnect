@@ -81,7 +81,7 @@ const Footer = () => {
         <div className="bottom">
           <div className="left">
             <h2>GigConnect</h2>
-            <span>© Fiverr International Ltd. 2023</span>
+            <span>© GigConnect International Ltd. 2023</span>
           </div>
           <div className="right">
             <div className="social">
