@@ -1,3 +1,3 @@
 # GigConnect
-client : yarn run dev
+client : yarn run dev || 
 server : yarn start
