@@ -7,6 +7,7 @@ import orderRoute from "./src/adapters/routes/order.route.js"
 import conversationRoute from "./src/adapters/routes/conversation.route.js"
 import messageRoute from "./src/adapters/routes/message.route.js"
 import reviewRoute from "./src/adapters/routes/review.route.js"
+import authRoute from "./src/adapters/routes/auth.route.js"
 
 const app = express();
 
@@ -24,7 +25,10 @@ const connect = async () => {
   }
 };
 
+app.use(express.json()); //this will allow to pass any json from the client side
+
 // endpoints
+app.use("/api/auth",authRoute);
 app.use("/api/users",userRoute); // "/api/user" is the end point and to make a request using this end point we are using userRoute
 app.use("/api/gigs", gigRoute);
 app.use("/api/orders", orderRoute)
