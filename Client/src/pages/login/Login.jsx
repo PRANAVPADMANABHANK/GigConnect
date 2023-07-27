@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
 import "./Login.scss";
 
 const Login = () => {
@@ -7,8 +8,9 @@ const Login = () => {
   const [error, setError] = useState(null);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); //to prevent the refreshing of the page
   };
+
   return (
     <div className="login">
       <form onSubmit={handleSubmit}>
@@ -25,6 +27,7 @@ const Login = () => {
         <input
           name="password"
           type="password"
+          placeholder="johndoe@gmail.com"
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit">Login</button>
