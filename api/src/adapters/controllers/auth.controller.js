@@ -1,8 +1,9 @@
 import User from "../../core/entities/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import createError from "../../utils/createError.js";
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
   try {
     const hash = bcrypt.hashSync(req.body.password, 5);
     const newUser = new User({
@@ -11,18 +12,20 @@ export const register = async (req, res) => {
     });
     await newUser.save();
     res.status(201).send("User has been created.");
-  } catch (error) {
-    res.status(500).send("Something went wrong!");
+  } catch (err) {
+    next(err);
   }
 };
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ username: req.body.username });
-    if (!user) return res.status(404).send("User not found!");
+
+    if (!user) return next(createError(404, "User not found")); // import "creatError" function that seperately added in a "util => createError.js" file
 
     const isCorrect = bcrypt.compareSync(req.body.password, user.password);
-    if (!isCorrect) return res.status(400).send("Wrong password or username!");
+    if (!isCorrect)
+      return next(createError(400, "Wrong password or username!"));
 
     const token = jwt.sign(
       {
@@ -33,7 +36,7 @@ export const login = async (req, res) => {
     );
 
     const { password, ...info } = user._doc;
-    
+
     //send token using cookie. "accessToken" is the cookie name
     res
       .cookie("accessToken", token, {
@@ -41,10 +44,17 @@ export const login = async (req, res) => {
       })
       .status(200)
       .send(info);
-  } catch (error) {}
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const logout = async (req, res) => {
-  try {
-  } catch (error) {}
+  res
+    .clearCookies("accessToken", {
+      sameSite: "none",
+      secure: true,
+    })
+    .status(200)
+    .send("User has been logged out."); //here clear the cookie from our browser
 };
