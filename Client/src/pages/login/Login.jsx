@@ -11,10 +11,16 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); //to prevent the refreshing of the page
     try {
-      const res = await axios.post("http://localhost:8800/api/auth/login", {
-        username,
-        password,
-      });
+      const res = await axios.post(
+        "http://localhost:8800/api/auth/login",
+        {
+          username,
+          password,
+        },
+        {
+          withCredentials: true
+        }
+      ); //post username and password to db using axios library
       console.log(res.data);
     } catch (err) {
       setError(err);
