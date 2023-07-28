@@ -24,7 +24,7 @@ function Navbar() {
   const currentUser = {
     id: 1,
     username: "PKYOU",
-    isSeller: false,
+    isSeller: true,
   };
 
   return (
