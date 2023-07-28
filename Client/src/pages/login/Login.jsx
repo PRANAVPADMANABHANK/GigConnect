@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import axios from "axios";
 import "./Login.scss";
 
 const Login = () => {
@@ -7,8 +8,18 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); //to prevent the refreshing of the page
+    try {
+      const res = await axios.post("http://localhost:8800/api/auth/login", {
+        username,
+        password,
+      });
+      console.log(res.data);
+    } catch (err) {
+      setError(err);
+      console.log(err);
+    }
   };
 
   return (
