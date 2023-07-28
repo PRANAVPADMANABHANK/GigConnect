@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import newRequest from "../../utils/newRequest";
 import "./Navbar.scss";
 
 function Navbar() {
   const [active, setActive] = useState(false); //state for activating the navbar while scrolling.
-  const [open, setOpen] = useState(false);    //to open the profile dropdown.
-  const { pathname } = useLocation();        //to recognize the location.
+  const [open, setOpen] = useState(false); //to open the profile dropdown.
+  const { pathname } = useLocation(); //to recognize the location.
 
   const isActive = () => {
     window.scrollY > 0 ? setActive(true) : setActive(false);
@@ -18,15 +19,19 @@ function Navbar() {
     };
   }, []);
 
+  const currentUser = JSON.parse(localStorage.getItem("currentUser")); //get the currentUser from the localStorage
 
-  // const currentUser = null
+  const navigate = useNavigate();
 
-  const currentUser = {
-    id: 1,
-    username: "PKYOU",
-    isSeller: true,
+  const handleLogout = async () => {
+    try {
+      await newRequest.post("auth/logout");
+      localStorage.setItem("currentUser", null);
+      navigate("/"); // clearing the cookie and localStorage
+    } catch (err) {
+      console.log(err);
+    }
   };
-
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
       <div className="container">
@@ -41,11 +46,10 @@ function Navbar() {
           <span>Explore</span>
           <span>English</span>
           {!currentUser?.isSeller && <span>Become a Seller</span>}
-          {!currentUser && <button>Join</button>}
           {currentUser ? (
             <div className="user" onClick={() => setOpen(!open)}>
               <img
-                src="https://images.pexels.com/photos/1115697/pexels-photo-1115697.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                src={currentUser?.img || "../../../public/img/noavatar.png"}
                 alt=""
               />
               <span>{currentUser?.username}</span>
@@ -67,7 +71,7 @@ function Navbar() {
                   <Link className="link" to="/messages">
                     Messages
                   </Link>
-                  <Link className="link" to="/">
+                  <Link className="link" onClick={handleLogout}>
                     Logout
                   </Link>
                 </div>

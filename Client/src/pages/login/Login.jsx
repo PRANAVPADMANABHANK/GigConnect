@@ -1,9 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import axios from "axios";
-import "./Login.scss";
 import newRequest from "../../utils/newRequest";
 import { useNavigate } from "react-router-dom";
+import "./Login.scss";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -43,7 +42,7 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit">Login</button>
-        {error && error} 
+        <span>{error && error}</span>
       </form>
     </div>
   );
