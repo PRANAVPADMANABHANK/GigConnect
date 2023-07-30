@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import GigCard from "../../components/gigCard/GigCard";
 import newRequest from "../../utils/newRequest";
 import { useQuery } from "@tanstack/react-query";
@@ -15,11 +15,11 @@ const Gigs = () => {
 
   // @tanstack/react-query data fetching
   const { isLoading, error, data, refetch } = useQuery({
-    queryKey: ["repoData"],
+    queryKey: ["gigs"],
     queryFn: () =>
       newRequest
         .get(
-          `/gigs${search}&min=${minRef.current.value}&max=${maxRef.current.value}`
+          `/gigs${search}&min=${minRef.current.value}&max=${maxRef.current.value}&sort=${sort}`
         )
         .then((res) => {
           return res.data;
@@ -31,6 +31,12 @@ const Gigs = () => {
     setOpen(false);
   };
 
+  // whenever the sort changes (like newest / bestselling ) refetch the gigs
+  useEffect(() => {
+    refetch();
+  }, [sort]);
+
+  // whenever the apply happen refetch the gigs
   const apply = () => {
     refetch();
   };
