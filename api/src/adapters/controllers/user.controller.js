@@ -14,9 +14,9 @@ export const deleteUser = async (req, res, next) => {
 
 export const getUser = async (req, res, next) => {
   // what all the params id that will fetch here
-  console.log(req.params.id,"]]]]")
+
   // filter out the users based on the params id
   const user = await User.findById(req.params.id);
-  
+
   res.status(200).send(user);
 };
