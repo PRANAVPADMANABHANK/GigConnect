@@ -15,7 +15,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.1",
-    "sass": "^1.63.6"
+    "react-tsparticles": "^2.11.0",
+    "sass": "^1.63.6",
+    "tsparticles-slim": "^2.11.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",

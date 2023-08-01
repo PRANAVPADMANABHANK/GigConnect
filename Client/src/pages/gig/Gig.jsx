@@ -138,7 +138,7 @@ function Gig() {
                 </div>
               </div>
             )}
-            <Reviews gigId={id}/>
+            <Reviews gigId={id} />
           </div>
 
           <div className="right">

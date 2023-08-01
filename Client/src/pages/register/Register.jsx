@@ -52,7 +52,7 @@ const Register = () => {
           <input
             name="username"
             type="text"
-            placeholder="johndoe"
+            placeholder="username"
             onChange={handleChange}
           />
           <label htmlFor="">Email</label>
@@ -66,7 +66,7 @@ const Register = () => {
           <input
             name="password"
             type="password"
-            placeholder="johndoe@gmail.com"
+            placeholder="password"
             onChange={handleChange}
           />
           <label htmlFor="">Profile Picture</label>
@@ -75,7 +75,7 @@ const Register = () => {
           <input
             name="country"
             type="text"
-            placeholder="Usa"
+            placeholder="country"
             onChange={handleChange}
           />
           <button type="submit">Register</button>
