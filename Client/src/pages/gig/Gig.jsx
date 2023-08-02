@@ -18,7 +18,6 @@ function Gig() {
       }),
   });
 
-  console.log(data, "]]]]]]]]");
 
   // @tanstack/react-query user data fetching
   const {
@@ -33,7 +32,6 @@ function Gig() {
       }),
   });
 
-  console.log(dataUser, "''''''''''");
 
   return (
     <div className="gig">

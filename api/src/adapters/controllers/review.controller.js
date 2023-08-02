@@ -19,7 +19,7 @@ export const createReview = async (req, res, next) => {
 
     // if a buyer created a review using a gigId they shouldn't allow to create another review using the same gigId
     const review = await Review.findOne({ gigId: req.body.gigId, userId: req.userId });
-    if (review) return next(createError(403, "You have already created a review for this gig!"));
+    if (review) return next(createError(403, "Oops! You have already created a review for this gig!"));
 
     // save in db
     const savedReview = await newReview.save();
