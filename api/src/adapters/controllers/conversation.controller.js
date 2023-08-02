@@ -21,7 +21,7 @@ export const createConversation = async (req, res, next) => {
 
 }
 
-export const updateConversation = async (req, res) => {
+export const updateConversation = async (req, res, next) => {
     try {
         const updatedConversation = await Conversation.findOneAndUpdate({ id: req.params.id }, {
             $set: {
@@ -41,7 +41,7 @@ export const updateConversation = async (req, res) => {
     }
 }
 
-export const getSingleConversation = async (req, res) => {
+export const getSingleConversation = async (req, res, next) => {
     try {
         const conversation = await Conversation.findOne({ id: req.params.id });
         res.status(200).send(conversation);
@@ -50,7 +50,7 @@ export const getSingleConversation = async (req, res) => {
     }
 }
 
-export const getConversations = async (req, res) => {
+export const getConversations = async (req, res, next) => {
     try {
         const conversations = await Conversation.find(req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId });
         res.status(200).send(conversations);
