@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useCallback } from "react";
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim"; // if you are going to use `loadSlim`, install the "tsparticles-slim" package too.
+import { useNavigate } from "react-router-dom"
 import "./Featured.scss";
 
 const Featured = () => {
+
+  const [input, setInput] = useState("");
+  const navigate = useNavigate()
+
   const particlesInit = useCallback(async (engine) => {
     console.log(engine);
     await loadSlim(engine);
@@ -13,6 +18,12 @@ const Featured = () => {
   const particlesLoaded = useCallback(async (container) => {
     await console.log(container);
   }, []);
+
+
+  const handleSubmit = () => {
+    navigate(`/gigs?search=${input}`);
+  }
+
   return (
     <div className="featured">
       <Particles
@@ -92,9 +103,9 @@ const Featured = () => {
           <div className="search">
             <div className="searchInput">
               <img src="../../../public/img/search.png" alt="" />
-              <input type="text" placeholder='Try "building mobile app"' />
+              <input type="text" placeholder='Try "building mobile app"' onChange={(e) => setInput(e.target.value)} />
             </div>
-            <button>Search</button>
+            <button onClick={handleSubmit}>Search</button>
           </div>
           <div className="popular">
             <span>Popular:</span>
