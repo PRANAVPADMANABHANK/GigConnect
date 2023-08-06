@@ -16,10 +16,11 @@ import MyGigs from "./pages/myGigs/MyGigs";
 import {
   QueryClient,
   QueryClientProvider,
-  useQuery,
 } from "@tanstack/react-query";
 import Pay from "./pages/pay/Pay";
 import Success from "./pages/success/Success";
+import Profile from "./pages/profile/Profile";
+import Error from "./pages/error/Error";
 
 function App() {
   const queryClient = new QueryClient();
@@ -88,6 +89,14 @@ function App() {
         {
           path: "/success",
           element: <Success />,
+        },
+        {
+          path: "/profile",
+          element: <Profile />,
+        },
+        {
+          path: "*",
+          element: <Error />,
         },
       ],
     },

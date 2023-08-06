@@ -26,6 +26,7 @@ const Featured = () => {
 
   return (
     <div className="featured">
+      <div className="particles-container">
       <Particles
         id="tsparticles"
         init={particlesInit}
@@ -95,6 +96,7 @@ const Featured = () => {
           detectRetina: true,
         }}
       />
+      </div>
       <div className="container">
         <div className="left">
           <h1>

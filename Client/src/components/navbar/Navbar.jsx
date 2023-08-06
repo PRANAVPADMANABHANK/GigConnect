@@ -65,6 +65,9 @@ function Navbar() {
                       </Link>
                     </>
                   )}
+                  <Link className="link" to="/profile">
+                    Profile
+                  </Link>
                   <Link className="link" to="/orders">
                     Orders
                   </Link>
