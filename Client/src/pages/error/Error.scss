@@ -1,0 +1,173 @@
+/* Error404.scss */
+
+.ag-format-container {
+    width: 1142px;
+    margin: 0 auto;
+}
+
+.js-ag-hide {
+    display: none;
+}
+
+.ag-page-404 {
+    padding: 100px 0 0;
+    background: url(https://raw.githubusercontent.com/SochavaAG/example-mycode/master/pens/404-error-smoke-from-toaster/images/toaster-bg.png) no-repeat 50% 100%;
+}
+
+.ag-canvas-404_img {
+    display: block;
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: fadein 3s forwards;
+    z-index: -1;
+  }
+  
+  @keyframes fadein {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+.ag-canvas-404 {
+    opacity: 0.7;
+    filter: alpha(opacity=70);
+    z-index: -1;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.ag-toaster-wrap {
+    display: table;
+    margin: 0 auto;
+    padding: 200px 0 0;
+    position: relative;
+}
+
+.ag-toaster {
+    width: 340px;
+    height: 217px;
+    position: relative;
+}
+
+.ag-toaster_toast-handler {
+    width: 155px;
+    height: 200px;
+    margin-left: 85px;
+    padding-top: 60px;
+    overflow: hidden;
+    z-index: 1;
+    position: absolute;
+    top: -150px;
+}
+
+.ag-toaster_shadow {
+    width: 165px;
+    height: 9px;
+    background: url(https://raw.githubusercontent.com/SochavaAG/example-mycode/master/pens/404-error-smoke-from-toaster/images/sprite-toaster.png) -340px -195px no-repeat;
+    position: absolute;
+    left: 0;
+    bottom: 91px;
+}
+
+.ag-toaster_toast {
+    width: 159px;
+    height: 171px;
+    background: url(https://raw.githubusercontent.com/SochavaAG/example-mycode/master/pens/404-error-smoke-from-toaster/images/sprite-toaster.png) -340px 0 no-repeat;
+    z-index: -1;
+    position: relative;
+}
+
+.ag-toaster_front {
+    width: 340px;
+    height: 217px;
+    background: url(https://raw.githubusercontent.com/SochavaAG/example-mycode/master/pens/404-error-smoke-from-toaster/images/sprite-toaster.png) 0 -18px no-repeat;
+    z-index: 2;
+    position: relative;
+}
+
+.ag-toaster_lever {
+    width: 22px;
+    height: 21px;
+    background: url(https://raw.githubusercontent.com/SochavaAG/example-mycode/master/pens/404-error-smoke-from-toaster/images/sprite-toaster.png) -340px -171px no-repeat;
+    position: absolute;
+    top: 75px;
+    right: 12px;
+}
+
+.ag-toaster_back {
+    width: 340px;
+    height: 18px;
+    background: url(https://raw.githubusercontent.com/SochavaAG/example-mycode/master/pens/404-error-smoke-from-toaster/images/sprite-toaster.png) no-repeat;
+    z-index: -3;
+    position: relative;
+}
+
+@keyframes an-bounce-in-up {
+    0% {
+        opacity: 0;
+        transform: translateY(2000px);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translateY(-20px);
+    }
+
+    80% {
+        transform: translateY(5px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.js-ag-animated {
+    animation-duration: 0.6s;
+    animation-fill-mode: both;
+}
+
+.js-ag-bounce-in-up {
+    animation-name: an-bounce-in-up;
+}
+
+@media only screen and (max-width: 767px) {
+    .ag-format-container {
+        width: 96%;
+    }
+}
+
+/* Added styles for Page Not Found text and Back button */
+.centered-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+  }
+  
+  .not-found-text {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .back-button {
+    padding: 10px 20px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #e35555;
+    }
+  }
