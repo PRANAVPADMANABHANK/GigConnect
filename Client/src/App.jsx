@@ -22,17 +22,22 @@ import Success from "./pages/success/Success";
 import Profile from "./pages/profile/Profile";
 import Error from "./pages/404/Error";
 import AdminDashboard from "./components/adminComponents/adminDashboard/AdminDashboard";
+import AdminNavbar from "./components/adminComponents/adminNavbar/AdminNavbar";
+import AdminFooter from "./components/adminComponents/adminFooter/AdminFooter";
+import Admin404 from "./components/admin404/Admin404";
 
 function App() {
   const queryClient = new QueryClient();
 
   const Layout = () => {
+    const isAdminRoute = window.location.pathname.startsWith("/admin"); // check the url starts with "/admin"
+
     return (
       <div className="app">
         <QueryClientProvider client={queryClient}>
-          <Navbar />
+          {isAdminRoute ? <AdminNavbar /> : <Navbar />} {/* Conditionally render AdminNavbar for admin routes */}
           <Outlet />
-          <Footer />
+          {isAdminRoute ? <AdminFooter /> : <Footer />} {/* Conditionally render AdminFooter for admin routes */}
         </QueryClientProvider>
       </div>
     );
@@ -97,11 +102,19 @@ function App() {
         },
         {
           path: "/admin",
-          element: <AdminDashboard/>
+          element: <AdminDashboard />
+        },
+        {
+          path: "/admin/Register",
+          element: <AdminDashboard />
         },
         {
           path: "*",
           element: <Error />,
+        },
+        {
+          path: "/admin/*",
+          element: <Admin404/>
         },
       ],
     },
