@@ -63,7 +63,7 @@ const Add = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     mutation.mutate(state);
-    // navigate("/mygigs");
+    navigate("/mygigs");
   }
 
 
@@ -83,9 +83,12 @@ const Add = () => {
             <label htmlFor="">Category</label>
             <select name="cat" id="cat" onChange={handleChange}>
               <option value="design">Design</option>
+              <option value="Ai">Ai</option>
               <option value="web">Web Development</option>
               <option value="animation">Animation</option>
-              <option value="music">Music</option>
+              <option value="Wordpress">Wordpress</option>
+              <option value="SEO">SEO</option>
+              <option value="Illustration">Illustration</option>
             </select>
             <div className="images">
               <div className="imagesInputs">

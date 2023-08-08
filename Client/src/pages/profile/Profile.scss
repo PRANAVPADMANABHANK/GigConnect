@@ -13,10 +13,17 @@ $profile-picture-size: 125px;
   align-items: center;
   display: flex;
   justify-content: center;
-  height: 50vh;
+  height: 70vh;
   margin-top: 100px;
   padding-bottom: 60px; /* Add padding to push down for the footer */
+
+  @media (max-width: 768px) {
+    /* Adjust margin-top and padding-bottom for smaller screens */
+    margin-top: 50px;
+    padding-bottom: 30px;
+  }
 }
+
 
 
 @keyframes popUp {

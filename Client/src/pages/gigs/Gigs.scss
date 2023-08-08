@@ -1,47 +1,48 @@
-.gigs{
+.gigs {
     display: flex;
     justify-content: center;
-    .container{
+
+    .container {
         width: 1400px;
         padding: 30px 0px;
         display: flex;
         flex-direction: column;
         gap: 15px;
 
-        .breadcrumbs{
+        .breadcrumbs {
             font-weight: 300;
             font-size: 13px;
             color: #555;
         }
 
-        p{
+        p {
             color: #999;
-            font-weight: 300;   
+            font-weight: 300;
         }
 
-        .menu{
+        .menu {
             display: flex;
             align-items: center;
             justify-content: space-between;
 
-            .left{
+            .left {
                 display: flex;
                 align-items: center;
                 gap: 10px;
                 color: #555;
                 font-weight: 300;
 
-                input{
+                input {
                     padding: 5px;
                     border: 1px solid lightgrey;
                     outline: none;
 
-                    &::placeholder{
+                    &::placeholder {
                         color: gray;
                     }
                 }
 
-                button{
+                button {
                     background-color: #1dbf73;
                     color: white;
                     font-weight: 500;
@@ -51,30 +52,32 @@
                     border-radius: 5px;
                 }
             }
-            .right{
+
+            .right {
                 display: flex;
                 align-items: center;
                 gap: 10px;
                 position: relative;
-                .sortBy{
+
+                .sortBy {
                     color: #555;
                     font-weight: 300;
                 }
 
-                .sortType{
+                .sortType {
                     font-weight: 500;
                 }
 
-                img{
+                img {
                     width: 15px;
                     cursor: pointer;
                 }
 
-                .rightMenu{
+                .rightMenu {
                     padding: 20px;
                     background-color: white;
                     border-radius: 5px;
-                    border: .5px solid lightgrey; 
+                    border: .5px solid lightgrey;
                     position: absolute;
                     top: 30px;
                     right: 0;
@@ -83,17 +86,18 @@
                     gap: 20px;
                     color: #555;
 
-                    span{
+                    span {
                         cursor: pointer;
                     }
 
                 }
             }
         }
-        .cards{
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust the minmax values as needed */
+            gap: 15px; /* Adjust the gap between cards */
         }
     }
 }

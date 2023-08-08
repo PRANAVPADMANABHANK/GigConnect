@@ -21,10 +21,12 @@ import Pay from "./pages/pay/Pay";
 import Success from "./pages/success/Success";
 import Profile from "./pages/profile/Profile";
 import Error from "./pages/404/Error";
-import AdminDashboard from "./components/adminComponents/adminDashboard/AdminDashboard";
+import AdminDashboard from "./components/adminComponents/home/Home";
 import AdminNavbar from "./components/adminComponents/adminNavbar/AdminNavbar";
 import AdminFooter from "./components/adminComponents/adminFooter/AdminFooter";
-import Admin404 from "./components/admin404/Admin404";
+import Admin404 from "./components/adminComponents/admin404/Admin404";
+import AdminHome from "./pages/adminPages/home/AdminHome";
+import AdminLayout from "./components/adminComponents/adminLayout/AdminLayout";
 
 function App() {
   const queryClient = new QueryClient();
@@ -33,6 +35,7 @@ function App() {
     const isAdminRoute = window.location.pathname.startsWith("/admin"); // check the url starts with "/admin"
 
     return (
+      // role based routing
       <div className="app">
         <QueryClientProvider client={queryClient}>
           {isAdminRoute ? <AdminNavbar /> : <Navbar />} {/* Conditionally render AdminNavbar for admin routes */}
@@ -45,6 +48,8 @@ function App() {
 
   const router = createBrowserRouter([
     {
+
+      // Seller and Buyer routes
       path: "/",
       element: <Layout />,
       children: [
@@ -101,20 +106,23 @@ function App() {
           element: <Profile />,
         },
         {
+          path: "*",
+          element: <Error />,
+        },
+
+
+        // Admin routes
+        {
           path: "/admin",
-          element: <AdminDashboard />
+          element: <AdminLayout/>
         },
         {
           path: "/admin/Register",
           element: <AdminDashboard />
         },
         {
-          path: "*",
-          element: <Error />,
-        },
-        {
           path: "/admin/*",
-          element: <Admin404/>
+          element: <Admin404 />
         },
       ],
     },

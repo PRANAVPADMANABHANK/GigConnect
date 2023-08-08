@@ -64,6 +64,13 @@
         img {
           max-height: 500px;
           object-fit: contain;
+          transition: transform 0.3s;
+          /* Add transition property for smooth hover effect */
+
+          &:hover {
+            transform: scale(1.05);
+            /* Increase the size on hover */
+          }
         }
       }
 

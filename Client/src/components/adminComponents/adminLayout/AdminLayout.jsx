@@ -1,9 +1,10 @@
-import React from 'react'
+// AdminLayout.js
+import React from 'react';
 
 const AdminLayout = () => {
-  return (
-    <div>AdminLayout</div>
-  )
-}
+    return (
+        <div className=""></div>
+    );
+};
 
-export default AdminLayout
+export default AdminLayout;

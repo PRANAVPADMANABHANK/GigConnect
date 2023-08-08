@@ -33,7 +33,7 @@ function GigCard({ item }) {
               <span>{data.username}</span>
             </div>
           )}
-          <p>{item.desc}</p>
+         <p><b>{item.title}</b></p>
           <div className="star">
             <img src="../../../public/img/star.png" alt="" />
             <span>
