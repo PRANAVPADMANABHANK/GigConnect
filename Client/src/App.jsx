@@ -20,7 +20,8 @@ import {
 import Pay from "./pages/pay/Pay";
 import Success from "./pages/success/Success";
 import Profile from "./pages/profile/Profile";
-import Error from "./pages/error/Error";
+import Error from "./pages/404/Error";
+import AdminDashboard from "./components/adminComponents/adminDashboard/AdminDashboard";
 
 function App() {
   const queryClient = new QueryClient();
@@ -93,6 +94,10 @@ function App() {
         {
           path: "/profile",
           element: <Profile />,
+        },
+        {
+          path: "/admin",
+          element: <AdminDashboard/>
         },
         {
           path: "*",

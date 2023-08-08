@@ -1,82 +1,46 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Profile.scss';
 
-const ProfileSection = () => {
-  const [activeTab, setActiveTab] = useState('profile');
-  const [profilePic, setProfilePic] = useState(null);
+const Profile = () => {
 
-  const handleProfilePicChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setProfilePic(event.target.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
+  const currentUser = JSON.parse(localStorage.getItem("currentUser")) // get the currentUser form the localStorage
+  
   return (
-    <div className="profile-section">
-      <div className="left-panel">
-        <div
-          className={`tab ${activeTab === 'profile' ? 'active' : ''}`}
-          onClick={() => setActiveTab('profile')}
-        >
-          Profile
+    <div className="layout">
+      <div className="profile">
+        <div className="profile__picture">
+          <img src={currentUser?.img || "../../../public/img/noavatar.png"} alt="ananddavis" />
         </div>
-        <div
-          className={`tab ${activeTab === 'password' ? 'active' : ''}`}
-          onClick={() => setActiveTab('password')}
-        >
-          Password
-        </div>
-      </div>
-      <div className="right-panel">
-        <div className="profile-pic-section">
-          <div className="profile-pic">
-            {profilePic ? (
-              <img src={profilePic} alt="Profile" />
-            ) : (
-              <div className="upload-button">
-                <label htmlFor="profilePic">
-                  <span>Upload Profile Pic</span>
-                  <input
-                    type="file"
-                    id="profilePic"
-                    accept="image/*"
-                    onChange={handleProfilePicChange}
-                  />
-                </label>
-              </div>
-            )}
+        <div className="profile__header">
+          <div className="profile__account">
+            <h4 className="profile__username">{currentUser?.username || "Nill"}</h4>
+          </div>
+          <div className="profile__edit">
+            <a className="profile__button" href="#">
+              Edit Profile
+            </a>
           </div>
         </div>
-        <div className="details-section">
-          {activeTab === 'profile' && (
-            <div className="content">
-              <h2>Profile Section</h2>
-              <div className="info">
-                <p><strong>Country:</strong> India</p>
-                <p><strong>Username:</strong> hari</p>
-                <p><strong>Email:</strong> hari@gmail.com</p>
-                <p><strong>Created At:</strong> 2023-07-27</p>
-              </div>
-            </div>
-          )}
-          {activeTab === 'password' && (
-            <div className="content">
-              <h2>Password Section</h2>
-              <div className="password-details">
-                {/* Password change form can be added here */}
-                <p>Change your password here</p>
-              </div>
-            </div>
-          )}
+        <div className="profile__input">
+          <div className="input-box">
+            {currentUser?.desc || <span style={{color: "red"}}>No desc entered</span>}
+          </div>
+          <div className="input-box">
+            {currentUser?.email || <span style={{color: "red"}}>No email entered</span>}
+          </div>
+          <div className="input-box">
+            {currentUser?.country || <span style={{color: "red"}}>No country entered</span>}
+          </div>
+          <div className="input-box">
+            {currentUser?.phone || <span style={{color: "red"}}>No phone number entered</span>}
+          </div>
+          <div className="input-box">
+            {currentUser?.isSeller == true ? "Seller" : currentUser?.isSeller == null ? <span style={{color: "red"}}>User not verified</span> : "Buyer"}
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default ProfileSection;
+export default Profile;

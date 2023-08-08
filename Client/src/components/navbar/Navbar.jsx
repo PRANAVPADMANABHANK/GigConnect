@@ -55,6 +55,9 @@ function Navbar() {
               <span>{currentUser?.username}</span>
               {open && (
                 <div className="options">
+                  <Link className="link" to="/profile">
+                    Profile
+                  </Link>
                   {currentUser?.isSeller && (
                     <>
                       <Link className="link" to="/mygigs">
@@ -65,9 +68,6 @@ function Navbar() {
                       </Link>
                     </>
                   )}
-                  <Link className="link" to="/profile">
-                    Profile
-                  </Link>
                   <Link className="link" to="/orders">
                     Orders
                   </Link>

@@ -7,7 +7,7 @@ import "./Register.scss";
 const Register = () => {
   const [file, setFile] = useState(null);
   const [user, setUser] = useState({
-    username: "", // specify the name of the input below
+    username: "",
     email: "",
     password: "",
     img: "",
@@ -15,6 +15,7 @@ const Register = () => {
     isSeller: false,
     desc: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const handleChange = (e) => {
@@ -31,6 +32,8 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
     const url = await upload(file);
 
     try {
@@ -41,8 +44,11 @@ const Register = () => {
       navigate("/login");
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
+
   return (
     <div className="register">
       <form onSubmit={handleSubmit}>
@@ -78,7 +84,10 @@ const Register = () => {
             placeholder="country"
             onChange={handleChange}
           />
-          <button type="submit">Register</button>
+          {/* Loading effect for the register button */}
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Registering..." : "Register"}
+          </button>
         </div>
         <div className="right">
           <h1>I want to become a seller</h1>
