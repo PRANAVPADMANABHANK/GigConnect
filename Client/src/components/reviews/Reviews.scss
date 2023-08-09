@@ -1,6 +1,18 @@
 .reviews {
   margin-top: 50px;
 
+  .reviews-heading {
+    font-size: 24px;
+
+    color: #333;
+  }
+
+  .reviews-heading-inactive {
+    font-size: 20px;
+
+    color: #999;
+  }
+
   .add {
     margin-top: 20px;
     display: flex;
@@ -16,16 +28,26 @@
         padding: 20px;
       }
 
+      .error {
+        color: red;
+        opacity: 0;
+        transition: opacity 0.6s ease-in-out;
+      }
+
+      .error.visible {
+        opacity: 1;
+      }
+
       select {
         width: 200px;
         padding: 20px;
         align-self: flex-end;
       }
-      
-      span{
+
+      span {
         color: red;
       }
-      
+
       button {
         align-self: flex-end;
         width: 100px;
