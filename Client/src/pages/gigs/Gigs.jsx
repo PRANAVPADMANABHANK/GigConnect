@@ -2,7 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import GigCard from "../../components/gigCard/GigCard";
 import newRequest from "../../utils/newRequest";
 import { useQuery } from "@tanstack/react-query";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import getCurrentUser from "../../utils/getCurrentUser";
 import "./Gigs.scss";
 
 const Gigs = () => {
@@ -10,8 +12,18 @@ const Gigs = () => {
   const [open, setOpen] = useState(false); //for sortBy dropdown state change
   const minRef = useRef();
   const maxRef = useRef();
-
+  const navigate = useNavigate();
   const { search } = useLocation();
+
+  const currentUser = getCurrentUser();
+  console.log(currentUser, "\\\\\\\\\\\\\\")
+
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/login");
+    }
+  }, [currentUser, navigate])
+
 
   // @tanstack/react-query data fetching
   const { isLoading, error, data, refetch } = useQuery({
@@ -44,7 +56,9 @@ const Gigs = () => {
   return (
     <div className="gigs">
       <div className="container">
-        <span className="breadcrumbs">GIG CONNECT > GRAPHICS & DESIGN ></span>
+        <span className="breadcrumbs">
+          GIG CONNECT {">"} GRAPHICS & DESIGN {">"}
+        </span>
         <h1>AI Artists</h1>
         <p>
           Explore the boundaries of art and technology with GigConnect AI
@@ -82,8 +96,8 @@ const Gigs = () => {
           {isLoading
             ? "Loading..."
             : error
-            ? "Something went wrong"
-            : data.map((gig) => <GigCard key={gig._id} item={gig} />)}
+              ? "Something went wrong"
+              : data.map((gig) => <GigCard key={gig._id} item={gig} />)}
         </div>
       </div>
     </div>
