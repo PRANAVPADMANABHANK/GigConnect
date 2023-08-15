@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Profile.scss';
+import EditProfileModal from '../../components/editProfileModal/EditProfileModal';
+import Modal from 'react-modal'; // Import the react-modal library
+
+Modal.setAppElement('#root'); // Set the app element for accessibility
 
 const Profile = () => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Track the modal's open state
 
-  const currentUser = JSON.parse(localStorage.getItem("currentUser")) // get the currentUser form the localStorage
-  
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+  const handleEditClick = () => {
+    if (!isModalOpen) {
+      setIsEditing(true);
+      setIsModalOpen(true); // Open the modal and set its open state
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsEditing(false);
+    setIsModalOpen(false); // Close the modal and set its open state
+  };
+
   return (
     <div className="layout">
       <div className="profile">
@@ -16,9 +34,9 @@ const Profile = () => {
             <h4 className="profile__username">{currentUser?.username || "Nill"}</h4>
           </div>
           <div className="profile__edit">
-            <a className="profile__button" href="#">
+            <button className="profile__button cta-button" onClick={handleEditClick}>
               Edit Profile
-            </a>
+            </button>
           </div>
         </div>
         <div className="profile__input">
@@ -39,6 +57,8 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
+      {isEditing && <EditProfileModal isOpen={isModalOpen} onRequestClose={handleCloseModal} />}
     </div>
   );
 };

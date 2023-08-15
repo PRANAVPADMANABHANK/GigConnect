@@ -9,6 +9,12 @@ $white: #ffffff;
 
 $profile-picture-size: 125px;
 
+.edit-profile-form {
+  opacity: 0; /* Form is initially invisible */
+  transform: translateY(20px); /* Initial translateY value */
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* Add transitions */
+}
+
 .layout {
   align-items: center;
   display: flex;

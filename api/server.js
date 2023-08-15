@@ -50,7 +50,7 @@ app.use((err, req, res, next) => {
 });
 
 //port connection
-app.listen(8800, () => {
+app.listen(process.env.PORT, () => {
   connect();
   console.log("Backend server is running!");
 });
