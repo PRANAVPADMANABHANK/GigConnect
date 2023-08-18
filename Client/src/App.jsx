@@ -21,12 +21,14 @@ import Pay from "./pages/pay/Pay";
 import Success from "./pages/success/Success";
 import Profile from "./pages/profile/Profile";
 import Error from "./pages/404/Error";
-import AdminDashboard from "./components/adminComponents/home/Home";
+// import AdminDashboard from "./components/adminComponents/home/Home";
 import AdminNavbar from "./components/adminComponents/adminNavbar/AdminNavbar";
-import AdminFooter from "./components/adminComponents/adminFooter/AdminFooter";
+import AdminSidebar from "./components/adminComponents/adminSidebar/AdminSidebar";
 import Admin404 from "./components/adminComponents/admin404/Admin404";
-import AdminHome from "./pages/adminPages/home/AdminHome";
-import AdminLayout from "./components/adminComponents/adminLayout/AdminLayout";
+// import AdminHome from "./pages/adminPages/home/AdminHome";
+import AdminLayout from "./components/adminComponents/adminDashboard/AdminDashboard";
+import Dashboard from "./components/adminComponents/admimHome/Dashboard";
+
 
 function App() {
   const queryClient = new QueryClient();
@@ -40,7 +42,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           {isAdminRoute ? <AdminNavbar /> : <Navbar />} {/* Conditionally render AdminNavbar for admin routes */}
           <Outlet />
-          {isAdminRoute ? <AdminFooter /> : <Footer />} {/* Conditionally render AdminFooter for admin routes */}
+          {isAdminRoute ? <AdminSidebar /> : <Footer />} {/* Conditionally render AdminFooter for admin routes */}
         </QueryClientProvider>
       </div>
     );
@@ -106,6 +108,10 @@ function App() {
           element: <Profile />,
         },
         {
+          path: "/forgot-password",
+          element:""
+        },
+        {
           path: "*",
           element: <Error />,
         },
@@ -118,7 +124,7 @@ function App() {
         },
         {
           path: "/admin/Register",
-          element: <AdminDashboard />
+          element: ""
         },
         {
           path: "/admin/*",

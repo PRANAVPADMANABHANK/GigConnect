@@ -41,6 +41,7 @@ const Login = () => {
           placeholder="password"
           onChange={(e) => setPassword(e.target.value)}
         />
+        <h3 className="forgot-password">Forgot Password</h3>
         <button type="submit">Login</button>
         <span>{error && error}</span>
       </form>

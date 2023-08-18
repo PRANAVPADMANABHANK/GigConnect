@@ -25,6 +25,19 @@
       padding: 20px;
       border: 1px solid rgb(216, 214, 214);
     }
+    /* Login.scss */
+
+    .forgot-password {
+      font-size: 14px;
+      color: #999999;
+      margin-top: 8px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .forgot-password:hover {
+      color: #666666;
+    }
 
     button {
       border: none;
