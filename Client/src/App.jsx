@@ -27,8 +27,8 @@ import AdminSidebar from "./components/adminComponents/adminSidebar/AdminSidebar
 import Admin404 from "./components/adminComponents/admin404/Admin404";
 // import AdminHome from "./pages/adminPages/home/AdminHome";
 import AdminLayout from "./components/adminComponents/adminDashboard/AdminDashboard";
-import Dashboard from "./components/adminComponents/admimHome/Dashboard";
-
+import ForgotPassword from "../../Client/src/pages/ForgotPassword/ForgotPassword"
+import ResetPassword from "../../Client/src/pages/resetPassword/ResetPassword"
 
 function App() {
   const queryClient = new QueryClient();
@@ -109,7 +109,11 @@ function App() {
         },
         {
           path: "/forgot-password",
-          element:""
+          element:<ForgotPassword/>
+        },
+        {
+          path: "/reset-password/:id/:token",
+          element:<ResetPassword/>
         },
         {
           path: "*",

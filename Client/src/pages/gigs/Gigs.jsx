@@ -16,7 +16,6 @@ const Gigs = () => {
   const { search } = useLocation();
 
   const currentUser = getCurrentUser();
-  console.log(currentUser, "\\\\\\\\\\\\\\")
 
   useEffect(() => {
     if (!currentUser) {

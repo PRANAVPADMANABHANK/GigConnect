@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import newRequest from "../../utils/newRequest";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.scss";
 
 const Login = () => {
@@ -38,10 +38,12 @@ const Login = () => {
         <input
           name="password"
           type="password"
-          placeholder="password"
+          placeholder="password"  
           onChange={(e) => setPassword(e.target.value)}
         />
-        <h3 className="forgot-password">Forgot Password</h3>
+        <Link to="/forgot-password">
+          <h3 className="forgot-password">Forgot Password</h3>
+        </Link>
         <button type="submit">Login</button>
         <span>{error && error}</span>
       </form>
