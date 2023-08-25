@@ -13,6 +13,8 @@
     "@emotion/styled": "^11.11.0",
     "@faker-js/faker": "^8.0.2",
     "@iconify/react": "^4.1.1",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
     "@mui/icons-material": "^5.14.3",
     "@mui/joy": "^5.0.0-beta.2",
     "@mui/lab": "^5.0.0-alpha.140",

@@ -3,6 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest.js";
 import "./Orders.scss";
 import { useNavigate } from "react-router-dom";
+import { IconButton, Stack } from "@mui/material";
+import Fingerprint from '@mui/icons-material/Fingerprint';
+import { CheckCircle, Cancel } from "@mui/icons-material";
+
+
 
 const Orders = () => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -13,6 +18,7 @@ const Orders = () => {
     queryKey: ["orders"],
     queryFn: () =>
       newRequest.get(`/orders`).then((res) => {
+        console.log(res.data,"orders")
         return res.data;
       }),
   });
@@ -45,6 +51,7 @@ const Orders = () => {
           <tr>
             <th>Image</th>
             <th>Title</th>
+            <th>Status</th>
             <th>Price</th>
             <th>Contact</th>
           </tr>
@@ -58,6 +65,20 @@ const Orders = () => {
                 />
               </td>
               <td>{order.title}</td>
+              <td>
+                  {currentUser.isSeller ? (
+                    <Stack direction="row" spacing={1}>
+                    <IconButton aria-label="accept" color="success">
+                      <CheckCircle />
+                    </IconButton>
+                    <IconButton aria-label="cancel" color="error">
+                      <Cancel />
+                    </IconButton>
+                  </Stack>
+                  ) : (
+                    "Pending"
+                  )}
+                </td>
               <td>{order.price}</td>
               <td>
                 <img className="message" src="./img/message.png" alt="" onClick={() => handleContact(order)} />

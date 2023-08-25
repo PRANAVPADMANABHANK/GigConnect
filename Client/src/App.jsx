@@ -29,6 +29,7 @@ import Admin404 from "./components/adminComponents/admin404/Admin404";
 import AdminLayout from "./components/adminComponents/adminDashboard/AdminDashboard";
 import ForgotPassword from "../../Client/src/pages/ForgotPassword/ForgotPassword"
 import ResetPassword from "../../Client/src/pages/resetPassword/ResetPassword"
+import Wallet from "./pages/wallet/Wallet";
 
 function App() {
   const queryClient = new QueryClient();
@@ -70,6 +71,10 @@ function App() {
         {
           path: "/orders",
           element: <Orders />,
+        },
+        {
+          path: "/wallet",
+          element: <Wallet />,
         },
         {
           path: "/messages",
