@@ -13,16 +13,17 @@ const useStyles = makeStyles((theme) => ({
   },
   box: {
     padding: theme.spacing(2),
-    backgroundColor: 'black', // Set the background color to black
+    backgroundColor: 'black',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
     borderRadius: theme.spacing(2),
-    transition: 'transform 0.2s ease-in-out',
+    width: 400,
+    height: 300,
+    animation: '$fadeIn 0.5s ease-in-out', // Apply the fade-in animation
+    transition: 'transform 0.2s ease-in-out', // Add transition for the hover effect
     '&:hover': {
-      transform: 'scale(1.05)',
-      boxShadow: '0 6px 12px rgba(0, 0, 0, 0.2)',
+      transform: 'scale(1.05)', // Increase size on hover
+      boxShadow: '0 6px 12px rgba(0, 0, 0, 0.2)', // Adjust the shadow on hover
     },
-    width: 400, // Adjust the width as needed
-    height: 300, // Adjust the height as needed
   },
   paper: {
     padding: theme.spacing(3),
@@ -35,6 +36,17 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 48,
     marginRight: theme.spacing(2),
     color: theme.palette.primary.main,
+  },
+  // Define the fadeIn animation
+  '@keyframes fadeIn': {
+    '0%': {
+      opacity: 0,
+      transform: 'scale(0.8)',
+    },
+    '100%': {
+      opacity: 1,
+      transform: 'scale(1)',
+    },
   },
 }));
 

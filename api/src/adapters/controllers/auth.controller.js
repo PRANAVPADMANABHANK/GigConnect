@@ -2,13 +2,20 @@ import User from "../../core/entities/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import createError from "../../utils/createError.js";
+import Wallet from "../../core/entities/wallet.model.js";
 
 export const register = async (req, res, next) => {
   try {
     const hash = bcrypt.hashSync(req.body.password, 5);
+
+    // Create a new Wallet for the user with default balance
+    const newWallet = new Wallet({ balance: 0 });
+    await newWallet.save();
+
     const newUser = new User({
       ...req.body,
       password: hash,
+      wallet: newWallet._id, // Assign the wallet reference to the user
     });
     await newUser.save();
     res.status(201).send("User has been created.");

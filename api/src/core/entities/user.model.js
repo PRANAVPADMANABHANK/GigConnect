@@ -38,6 +38,10 @@ const UserSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    wallet: {
+      type: Schema.Types.ObjectId,
+      ref: "Wallet",
+    },
   },
   {
     timestamps: true,

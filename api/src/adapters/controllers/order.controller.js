@@ -1,6 +1,9 @@
 import createError from "../../utils/createError.js";
+import User from "../../core/entities/user.model.js";
 import Order from "../../core/entities/order.model.js";
+import Wallet from "../../core/entities/wallet.model.js"
 import Gig from "../../core/entities/gig.model.js";
+import { Types } from "mongoose"; // Import Types from mongoose
 import Stripe from "stripe";
 
 export const intent = async (req, res, next) => {
@@ -39,7 +42,39 @@ export const getOrder = async (req, res, next) => {
       ...(req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }),
       isCompleted: true,
     });
-    res.status(200).send(orders);
+
+    const buyerIds = orders.map((order) => order.buyerId);
+    const sellerIds = orders.map((order) => order.sellerId); // Extract sellerIds from orders
+    // console.log(buyerIds, "buyerIds")
+    // console.log(sellerIds, "sellerIds")
+
+    const buyers = await User.find({ _id: { $in: buyerIds } }, "username");
+    const sellers = await User.find({ _id: { $in: sellerIds } }, "username"); // Retrieve sellers' names
+    // console.log(buyers, "buyers")
+    // console.log(sellers," sellers")
+
+    const ordersWithNames = orders.map((order) => {
+      const buyer = buyers.find((buyer) => buyer._id.equals(order.buyerId));
+      const seller = sellers.find((seller) =>
+        seller._id.equals(order.sellerId)
+      );
+      return {
+        ...order._doc,
+        buyerName: buyer ? buyer.username : "Unknown Buyer",
+        sellerName: seller ? seller.username : "Unknown Seller",
+      };
+    });
+
+    // console.log(ordersWithNames, "ordersWithNames")
+
+    res.status(200).json({
+      orders: ordersWithNames,
+      buyers,
+      sellers,
+    });
+
+    // console.log(orders, "orders")
+    // res.status(200).send(orders);
   } catch (error) {
     next(err);
   }
@@ -77,5 +112,68 @@ export const confirm = async (req, res, next) => {
     res.status(200).send("Order has been confirmed.");
   } catch (err) {
     next(err);
+  }
+};
+
+export const cancelWalletAmount = async (req, res, next) => {
+  console.log(req.params.id, "params");
+  try {
+    const id = new Types.ObjectId(req.params.id);
+
+    // Find the completed order based on the provided ID
+    const completedOrder = await Order.aggregate([
+      {
+        $match: {
+          _id: id,
+          isCompleted: true,
+        },
+      },
+      {
+        $lookup: {
+          from: "users", // Name of the users collection
+          let: { buyerId: { $toObjectId: "$buyerId" } }, // Convert buyerId to ObjectId
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ["$_id", "$$buyerId"] }, // Compare _id with converted buyerId
+              },
+            },
+          ],
+          as: "buyer",
+        },
+      },
+      {
+        $unwind: "$buyer", // Unwind the array
+      },
+      {
+        $lookup: {
+          from: "wallets", // Name of the wallets collection
+          localField: "buyer.wallet",
+          foreignField: "_id",
+          as: "buyer.wallet",
+        },
+      },
+    ]);
+
+    console.log(completedOrder[0].price, "completedOrder");
+    console.log(completedOrder[0].buyer.wallet, "completedOrder");
+    console.log(completedOrder[0].buyer.wallet[0]._id, "completedOrder");
+
+    if (!completedOrder) {
+      return res.status(404).json({ message: "Completed order not found" });
+    }
+
+    const price = completedOrder[0].price;
+    const walletId = completedOrder[0].buyer.wallet[0]._id;
+    // Update the wallet's balance with the price
+    await Wallet.updateOne(
+      { _id: walletId },
+      { $inc: { balance: price } } // Increment the balance by the order price
+    );
+
+    return res.status(200).json({ message: "Balance updated successfully" });
+
+  } catch (error) {
+    next(error);
   }
 };
