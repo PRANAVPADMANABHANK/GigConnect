@@ -8,6 +8,7 @@ import conversationRoute from "./src/adapters/routes/conversation.route.js";
 import messageRoute from "./src/adapters/routes/message.route.js";
 import reviewRoute from "./src/adapters/routes/review.route.js";
 import authRoute from "./src/adapters/routes/auth.route.js";
+import walletRoute from "./src/adapters/routes/wallet.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -40,6 +41,7 @@ app.use("/api/orders", orderRoute);
 app.use("/api/conversations", conversationRoute);
 app.use("/api/messages", messageRoute); 
 app.use("/api/reviews", reviewRoute);
+app.use("/api/wallets", walletRoute);
 
 //error handling middleware
 app.use((err, req, res, next) => {

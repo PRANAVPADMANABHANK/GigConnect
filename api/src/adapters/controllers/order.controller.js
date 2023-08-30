@@ -27,6 +27,7 @@ export const intent = async (req, res, next) => {
     buyerId: req.userId,
     sellerId: gig.userId,
     price: gig.price,
+    status:"pending",
     payment_intent: paymentIntent.id,
   });
 
@@ -156,7 +157,7 @@ export const cancelWalletAmount = async (req, res, next) => {
     ]);
 
     console.log(completedOrder[0].price, "completedOrder");
-    console.log(completedOrder[0].buyer.wallet, "completedOrder");
+    console.log(completedOrder[0].buyer.wallet[0].balance, "completedOrder");
     console.log(completedOrder[0].buyer.wallet[0]._id, "completedOrder");
 
     if (!completedOrder) {
@@ -171,9 +172,35 @@ export const cancelWalletAmount = async (req, res, next) => {
       { $inc: { balance: price } } // Increment the balance by the order price
     );
 
-    return res.status(200).json({ message: "Balance updated successfully" });
+    // Update the status of the completed order to "Cancelled"
+    await Order.updateOne(
+      { _id: id },
+      { $set: { status: "Cancelled" } }
+    );
+
+    
+    return res.status(200).json({ message: "Balance updated successfully", price: completedOrder[0].buyer.wallet[0].balance, status: completedOrder[0].status });
 
   } catch (error) {
     next(error);
   }
 };
+
+
+
+export const acceptOrder = async(req, res, next) => {
+  try {
+    const id = new Types.ObjectId(req.params.id);
+    // Update the status of the completed order to "Cancelled"
+    await Order.updateOne(
+      { _id: id },
+      { $set: { status: "Accepted" } }
+    );
+
+    const status = await Order.findById(id)
+    console.log(status, "status")
+    return res.status(200).json({message: "Order accept successfull", status})
+  } catch (err) {
+    next(createError(error))
+  }
+}

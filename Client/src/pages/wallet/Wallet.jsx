@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
+import newRequest from '../../utils/newRequest';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,7 +52,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Wallet = () => {
+  const [walletAmount, setWalletAmount] = useState(0);
   const classes = useStyles();
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+  console.log(currentUser.wallet, "currentUser")
+  const walletId = currentUser.wallet
+
+
+  useEffect(() => {
+    console.log("Fetching wallet balance...");
+    const fetchWalletBalance = async () => {
+      try {
+        const response = await newRequest.get(`/wallets/wallet/${walletId}`);
+        console.log("Wallet balance response:", response.data.balance);
+        setWalletAmount(response.data.balance); // Update the state with fetched value
+      } catch (error) {
+        console.error("Error fetching wallet balance:", error);
+      }
+    };
+    fetchWalletBalance();
+  }, [walletId]);
+  
 
   return (
     <div className={classes.root}>
@@ -65,7 +87,7 @@ const Wallet = () => {
               My Wallet
             </Typography>
             <Typography color="textSecondary">
-              Available balance: $500
+              Available balance: ${walletAmount}
             </Typography>
           </div>
         </Paper>
