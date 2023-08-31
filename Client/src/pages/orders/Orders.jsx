@@ -152,8 +152,8 @@ const Orders = () => {
                 <th>Image</th>
                 <th>Title</th>
                 <th>{!currentUser?.isSeller ? "Seller Name" : "Buyer Name"}</th>
-                <th>{currentUser?.isSeller ? "Action" : "Status"}</th>
-                {currentUser?.isSeller && <th>Status</th>}
+                <th>{currentUser?.isSeller ? "Action" : "Order Status"}</th>
+                {currentUser?.isSeller && <th>Order Status</th>}
                 <th>Price</th>
                 <th>Contact</th>
               </tr>

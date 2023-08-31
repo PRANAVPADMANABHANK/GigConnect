@@ -47,7 +47,7 @@ const Message = () => {
     <div className="message">
       <div className="container">
         <span className="breadcrumbs">
-          <Link to="/messages">Messages</Link> {">"} John Doe {">"}
+          <Link to="/messages">Messages</Link> {">"} {currentUser.username} {">"}
         </span>
         {isLoading ? ("Loading...") : error ? ("Something went wrong!") : (<div className="messages">
           {data.map((m) => (

@@ -23,12 +23,13 @@ import Profile from "./pages/profile/Profile";
 import Error from "./pages/404/Error";
 // import AdminDashboard from "./components/adminComponents/home/Home";
 import AdminNavbar from "./components/adminComponents/adminNavbar/AdminNavbar";
-import AdminSidebar from "./components/adminComponents/adminSidebar/AdminSidebar";
+// import AdminSidebar from "./components/adminComponents/adminSidebar/AdminSidebar";
 import Admin404 from "./components/adminComponents/admin404/Admin404";
 // import AdminHome from "./pages/adminPages/home/AdminHome";
-import AdminLayout from "./components/adminComponents/adminDashboard/AdminDashboard";
+// import AdminDashboard from "./components/adminComponents/adminDashboard/AdminDashboard";
 import ForgotPassword from "../../Client/src/pages/ForgotPassword/ForgotPassword"
 import ResetPassword from "../../Client/src/pages/resetPassword/ResetPassword"
+import UserList from "../../Client/src/pages/adminPages/userList/UserList"
 import Wallet from "./pages/wallet/Wallet";
 
 function App() {
@@ -41,9 +42,9 @@ function App() {
       // role based routing
       <div className="app">
         <QueryClientProvider client={queryClient}>
-          {isAdminRoute ? <AdminNavbar /> : <Navbar />} {/* Conditionally render AdminNavbar for admin routes */}
+          {isAdminRoute ? <AdminNavbar/> : <Navbar />} {/* Conditionally render AdminNavbar for admin routes */}
           <Outlet />
-          {isAdminRoute ? <AdminSidebar /> : <Footer />} {/* Conditionally render AdminFooter for admin routes */}
+          {isAdminRoute ? "" : <Footer />} {/* Conditionally render AdminFooter for admin routes */}
         </QueryClientProvider>
       </div>
     );
@@ -128,8 +129,12 @@ function App() {
 
         // Admin routes
         {
-          path: "/admin",
-          element: <AdminLayout/>
+          path: "/admin/dashboard",
+          element: ""
+        },
+        {
+          path: "/admin/users",
+          element: <UserList/>
         },
         {
           path: "/admin/Register",
