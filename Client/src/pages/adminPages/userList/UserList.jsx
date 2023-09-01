@@ -12,19 +12,22 @@ import {
   TableSortLabel,
   Container,
   Box,
+  Avatar,
+  Button,
 } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import newRequest from "../../../utils/newRequest";
 
 const columns = [
-  { id: "id", label: "ID" },
-  { id: "name", label: "Name" },
-  { id: "age", label: "Age" },
-];
-
-const data = [
-  { id: 1, name: "John", age: 25 },
-  { id: 2, name: "Jane", age: 30 },
-  { id: 3, name: "Alice", age: 28 },
-  // ... more data
+  { id: "id", label: "No" },
+  { id: "avatar", label: "Avatar" },
+  { id: "username", label: "Username" },
+  { id: "email", label: "Email" },
+  { id: "country", label: "Country" },
+  { id: "phone", label: "Phone" },
+  { id: "desc", label: "Description" },
+  { id: "isSeller", label: "Is Seller" }, // New column for isSeller
+  { id: "actions", label: "Actions" }, // New column for actions
 ];
 
 const TableWithPagination = () => {
@@ -38,6 +41,35 @@ const TableWithPagination = () => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
+  };
+
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["userList"],
+    queryFn: () =>
+      newRequest.get(`/admin`).then((res) => {
+        console.log(res.data, "userList");
+        return res.data.map((user) => ({
+          ...user,
+          _id: user._id.$oid,
+          createdAt: new Date(user.createdAt.$date),
+          updatedAt: new Date(user.updatedAt.$date),
+        }));
+      }),
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  const handleToggleSeller = (userId, isSeller) => {
+
+    console.log(userId,"userId")
+    console.log(isSeller,"isSeller")
+    // Implement logic to toggle isSeller status and update it on the server
   };
 
   const filteredData = data.filter((row) =>
@@ -97,11 +129,26 @@ const TableWithPagination = () => {
             <TableBody>
               {sortedData
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <TableRow key={row.id}>
-                    {columns.map((column) => (
+                .map((row, index) => (
+                  <TableRow key={row._id}>
+                    <TableCell>{page * rowsPerPage + index + 1}</TableCell>
+                    <TableCell>
+                      <Avatar alt={row.username} src={row.img} />
+                    </TableCell>
+                    {columns.slice(2, columns.length - 2).map((column) => (
                       <TableCell key={column.id}>{row[column.id]}</TableCell>
                     ))}
+                    <TableCell>{row.isSeller ? "Yes" : "No"}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="outlined"
+                        onClick={() =>
+                          handleToggleSeller(row._id, row.isSeller)
+                        }
+                      >
+                        {"Block"}
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>

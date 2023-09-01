@@ -30,6 +30,7 @@ import Admin404 from "./components/adminComponents/admin404/Admin404";
 import ForgotPassword from "../../Client/src/pages/ForgotPassword/ForgotPassword"
 import ResetPassword from "../../Client/src/pages/resetPassword/ResetPassword"
 import UserList from "../../Client/src/pages/adminPages/userList/UserList"
+import AdminLogin from "../../Client/src/pages/adminPages/adminLogin/AdminLogin"
 import Wallet from "./pages/wallet/Wallet";
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
 
   const Layout = () => {
     const isAdminRoute = window.location.pathname.startsWith("/admin"); // check the url starts with "/admin"
+    
 
     return (
       // role based routing
@@ -138,7 +140,7 @@ function App() {
         },
         {
           path: "/admin/Register",
-          element: ""
+          element: <AdminLogin/>
         },
         {
           path: "/admin/*",

@@ -2,4 +2,8 @@ const getCurrentUser = () => {
     return JSON.parse(localStorage.getItem("currentUser"))
 }
 
-export default getCurrentUser;
+const getCurrentAdmin = () => {
+    return JSON.parse(localStorage.getItem("currentAdmin"))
+}
+
+export default {getCurrentUser, getCurrentAdmin};

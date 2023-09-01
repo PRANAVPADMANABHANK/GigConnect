@@ -10,4 +10,5 @@ router.put("/updateProfile", verifyToken, updateProfile)
 router.post("/forgot-password",forgotPassword)
 router.post("/reset-password/:id/:token",resetPassword)
 
+
 export default router;

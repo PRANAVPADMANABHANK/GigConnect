@@ -12,3 +12,18 @@ export const verifyToken = (req, res, next) => {
     next();
   });
 };
+
+
+export const verifyAdminToken = (req, res, next) => {
+  const adminToken = req.cookies.adminAccessToken;
+  if (!adminToken) return next(createError(401, "Admin token is missing!"));
+
+  jwt.verify(adminToken, process.env.JWT_KEY, (err, payload) => {
+    if (err) return next(createError(403, "Admin token is not valid"));
+    if (!payload.isAdmin)
+      return next(createError(403, "You are not authorized as an admin"));
+    
+    req.adminId = payload.id;
+    next();
+  });
+};
