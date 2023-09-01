@@ -28,7 +28,7 @@ const columns = [
   { id: "isCompleted", label: "Is Completed" },
   { id: "payment_intent", label: "Payment Intent" },
   { id: "createdAt", label: "Created At" },
-  {  },
+  {},
 ];
 
 const TableWithPagination = () => {
@@ -52,8 +52,8 @@ const TableWithPagination = () => {
         return res.data.map((order) => ({
           ...order,
           id: order._id, // Use _id as id
-          sellerName: order.sellerName || 'N/A',
-          buyerName: order.buyerName || 'N/A',
+          sellerName: order.sellerName || "N/A",
+          buyerName: order.buyerName || "N/A",
           createdAt: new Date(order.createdAt),
           updatedAt: new Date(order.updatedAt),
         }));
@@ -151,6 +151,8 @@ const TableWithPagination = () => {
                           ? row[column.id]
                             ? "Yes"
                             : "No"
+                          : column.id === "price"
+                          ? `$${row[column.id]}` // Add the dollar sign here
                           : row[column.id]}
                       </TableCell>
                     ))}
