@@ -1,7 +1,8 @@
 import User from "../../core/entities/user.model.js";
-import Admin from "../../core/entities/adminRegister.model.js"
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import Order from "../../core/entities/order.model.js";
+import Admin from "../../core/entities/adminRegister.model.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import createError from "../../utils/createError.js";
 
 export const userList = async (req, res) => {
@@ -14,18 +15,20 @@ export const userList = async (req, res) => {
   }
 };
 
-
-
 export const adminRegister = async (req, res) => {
-  console.log('Admin Registration');
-
   try {
     const { username, email, password } = req.body;
 
     // Check if the admin already exists
-    const existingAdmin = await Admin.findOne({ $or: [{ username }, { email }] });
+    const existingAdmin = await Admin.findOne({
+      $or: [{ username }, { email }],
+    });
     if (existingAdmin) {
-      return res.status(400).json({ message: 'Admin already exists with the same username or email' });
+      return res
+        .status(400)
+        .json({
+          message: "Admin already exists with the same username or email",
+        });
     }
 
     // Hash the password
@@ -41,20 +44,16 @@ export const adminRegister = async (req, res) => {
     // Save the admin to the database
     await newAdmin.save();
 
-    res.status(201).json({ message: 'Admin registered successfully' });
+    res.status(201).json({ message: "Admin registered successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-
 export const adminLogin = async (req, res, next) => {
-    console.log("adminLogin")
-    const { email, password } = req.body; // Extract email and password from the request body
+  const { email, password } = req.body; // Extract email and password from the request body
 
-
-    console.log(email)
   try {
     const admin = await Admin.findOne({ email: req.body.email });
 
@@ -86,7 +85,6 @@ export const adminLogin = async (req, res, next) => {
   }
 };
 
-
 export const adminLogout = async (req, res) => {
   res
     .clearCookie("adminAccessToken", {
@@ -95,4 +93,39 @@ export const adminLogout = async (req, res) => {
     })
     .status(200)
     .send("User has been logged out."); //here clear the cookie from our browser
+};
+
+export const getOrders = async (req, res) => {
+  try {
+    const orders = await Order.find();
+
+    const ordersWithNames = await Promise.all(
+      orders.map(async (order) => {
+        const seller = await User.findById(order.sellerId).exec();
+        const buyer = await User.findById(order.buyerId).exec();
+
+        return {
+          _id: order._id,
+          gigId: order.gigId,
+          img: order.img,
+          title: order.title,
+          price: order.price,
+          status: order.status,
+          sellerId: order.sellerId,
+          sellerName: seller ? seller.username : "", // Get seller name or an empty string if not found
+          buyerId: order.buyerId,
+          buyerName: buyer ? buyer.username : "", // Get buyer name or an empty string if not found
+          isCompleted: order.isCompleted,
+          payment_intent: order.payment_intent,
+          createdAt: order.createdAt,
+          updatedAt: order.updatedAt,
+        };
+      })
+    );
+
+    res.json(ordersWithNames);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Server error" });
+  }
 };

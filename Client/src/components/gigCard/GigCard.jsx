@@ -46,7 +46,7 @@ function GigCard({ item }) {
         </div>
         <hr />
         <div className="details">
-          <img src="../../../public/img/heart.png" alt="" />
+          {/* <img src="../../../public/img/heart.png" alt="" /> */}
           <div className="price">
             <span>STARTING AT</span>
             <h2>${item.price}</h2>

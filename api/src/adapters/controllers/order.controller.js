@@ -198,7 +198,6 @@ export const acceptOrder = async(req, res, next) => {
     );
 
     const status = await Order.findById(id)
-    console.log(status, "status")
     return res.status(200).json({message: "Order accept successfull", status})
   } catch (err) {
     next(createError(error))

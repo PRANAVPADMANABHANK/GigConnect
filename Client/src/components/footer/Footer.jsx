@@ -6,7 +6,7 @@ const Footer = () => {
     <div className="footer">
       <div className="container">
         <div className="top">
-          <div className="item">
+          {/* <div className="item">
             <h2>Categories</h2>
             <span>Graphics & Design</span>
             <span>Digital Marketing</span>
@@ -19,62 +19,62 @@ const Footer = () => {
             <span>Lifestyle</span>
             <span>Photography</span>
             <span>Sitemap</span>
+          </div> */}
+          <div className="item">
+            <h2>QUICK LINKS</h2>
+            <span>Profile</span>
+            <span>Gigs</span>
+            <span>Orders</span>
+            <span>Wallet</span>
+            {/* <span>Music & Audio</span>
+            <span>Programming & Tech</span>
+            <span>Data</span>
+            <span>Business</span>
+            <span>Lifestyle</span>
+            <span>Photography</span>
+            <span>Sitemap</span> */}
           </div>
           <div className="item">
-            <h2>Categories</h2>
-            <span>Graphics & Design</span>
-            <span>Digital Marketing</span>
-            <span>Writing & Translation</span>
-            <span>video & Animation</span>
+            <h2>ACCOUNT</h2>
+            <span>My account</span>
+            <span>Order tracking</span>
+            <span>Gigs</span>
+            {/* <span>video & Animation</span>
             <span>Music & Audio</span>
             <span>Programming & Tech</span>
             <span>Data</span>
             <span>Business</span>
             <span>Lifestyle</span>
             <span>Photography</span>
-            <span>Sitemap</span>
+            <span>Sitemap</span> */}
           </div>
           <div className="item">
-            <h2>Categories</h2>
-            <span>Graphics & Design</span>
-            <span>Digital Marketing</span>
-            <span>Writing & Translation</span>
-            <span>video & Animation</span>
+            <h2>CONTACT US</h2>
+            <span>Facebook</span>
+            <span>Instagram</span>
+            <span>Twitter</span>
+            {/* <span>video & Animation</span>
             <span>Music & Audio</span>
             <span>Programming & Tech</span>
             <span>Data</span>
             <span>Business</span>
             <span>Lifestyle</span>
             <span>Photography</span>
-            <span>Sitemap</span>
+            <span>Sitemap</span> */}
           </div>
           <div className="item">
-            <h2>Categories</h2>
-            <span>Graphics & Design</span>
-            <span>Digital Marketing</span>
-            <span>Writing & Translation</span>
-            <span>video & Animation</span>
+            <h2>HAVE A QUESTION?</h2>
+            <span>203 Fake St. Mountain View, Bangaluru,<br /> karnataka, India</span>
+            <span>+91-7907938758</span>
+            <span>gigconnectofficial@gmail.com</span>
+            {/* <span>video & Animation</span>
             <span>Music & Audio</span>
             <span>Programming & Tech</span>
             <span>Data</span>
             <span>Business</span>
             <span>Lifestyle</span>
             <span>Photography</span>
-            <span>Sitemap</span>
-          </div>
-          <div className="item">
-            <h2>Categories</h2>
-            <span>Graphics & Design</span>
-            <span>Digital Marketing</span>
-            <span>Writing & Translation</span>
-            <span>video & Animation</span>
-            <span>Music & Audio</span>
-            <span>Programming & Tech</span>
-            <span>Data</span>
-            <span>Business</span>
-            <span>Lifestyle</span>
-            <span>Photography</span>
-            <span>Sitemap</span>
+            <span>Sitemap</span> */}
           </div>
         </div>
         <hr />

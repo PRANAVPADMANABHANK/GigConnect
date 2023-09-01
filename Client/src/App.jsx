@@ -31,6 +31,7 @@ import ForgotPassword from "../../Client/src/pages/ForgotPassword/ForgotPassword
 import ResetPassword from "../../Client/src/pages/resetPassword/ResetPassword"
 import UserList from "../../Client/src/pages/adminPages/userList/UserList"
 import AdminLogin from "../../Client/src/pages/adminPages/adminLogin/AdminLogin"
+import AdminOrders from "../../Client/src/pages/adminPages/adminOrders/AdminOrders"
 import Wallet from "./pages/wallet/Wallet";
 
 function App() {
@@ -132,7 +133,7 @@ function App() {
         // Admin routes
         {
           path: "/admin/dashboard",
-          element: ""
+          element: <AdminOrders/>
         },
         {
           path: "/admin/users",

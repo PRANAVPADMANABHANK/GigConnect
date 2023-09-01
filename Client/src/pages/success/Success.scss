@@ -1,16 +1,18 @@
-// Success.scss
 .success-message {
-    background-color: #4caf50; // Green background color
-    color: white; // White text color
-    padding: 20px;
-    text-align: center;
-    border-radius: 8px; // Rounded corners
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); // Subtle shadow
-    font-size: 18px;
-  }
+  background-color: #4caf50; // Green background color
+  color: white; // White text color
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px; // Rounded corners
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); // Subtle shadow
+  font-size: 18px;
   
-  .redirect-text {
-    margin-top: 10px;
-    font-size: 14px;
-  }
-      
+  // Add margin or padding to create space
+  margin-top: 150px; /* Adjust the value as needed */
+  margin-bottom: 150px; /* Adjust the value as needed */
+}
+
+.redirect-text {
+  margin-top: 10px;
+  font-size: 14px;
+}
