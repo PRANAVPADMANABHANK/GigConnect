@@ -24,11 +24,9 @@ export const adminRegister = async (req, res) => {
       $or: [{ username }, { email }],
     });
     if (existingAdmin) {
-      return res
-        .status(400)
-        .json({
-          message: "Admin already exists with the same username or email",
-        });
+      return res.status(400).json({
+        message: "Admin already exists with the same username or email",
+      });
     }
 
     // Hash the password
@@ -127,5 +125,28 @@ export const getOrders = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Server error" });
+  }
+};
+
+export const userBlocked = async (req, res, next) => {
+  const id = req.params.id;
+
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Toggle the isBlocked status
+    user.isBlocked = !user.isBlocked;
+
+    // Save the updated user
+    const updatedUser = await user.save();
+
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    next(error);
   }
 };

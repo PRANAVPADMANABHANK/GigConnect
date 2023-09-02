@@ -50,7 +50,7 @@ const TableWithPagination = () => {
         console.log(res.data, "userList");
         return res.data.map((user) => ({
           ...user,
-          _id: user._id.$oid,
+          _id: user._id,
           createdAt: new Date(user.createdAt.$date),
           updatedAt: new Date(user.updatedAt.$date),
         }));
@@ -65,12 +65,19 @@ const TableWithPagination = () => {
     return <div>Error: {error.message}</div>;
   }
 
-  const handleToggleSeller = (userId, isSeller) => {
+  const handleToggleSeller = async (userId, isSeller) => {
+    console.log(userId, "userId");
+    console.log(isSeller, "isSeller");
 
-    console.log(userId,"userId")
-    console.log(isSeller,"isSeller")
-    // Implement logic to toggle isSeller status and update it on the server
+    try {
+      const response = await newRequest.put(`/admin/toggleUserBlocked/${userId}`);
+      console.log(response.data, "response.data");
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  console.log(data, "data");
 
   const filteredData = data.filter((row) =>
     Object.values(row).some(
@@ -80,6 +87,8 @@ const TableWithPagination = () => {
     )
   );
 
+  console.log(filteredData, "filteredData");
+
   const sortedData = filteredData.slice().sort((a, b) => {
     if (orderBy === "") return 0;
     if (order === "asc") {
@@ -88,6 +97,8 @@ const TableWithPagination = () => {
       return a[orderBy] < b[orderBy] ? 1 : -1;
     }
   });
+
+  console.log(sortedData, "sortedData");
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -146,7 +157,7 @@ const TableWithPagination = () => {
                           handleToggleSeller(row._id, row.isSeller)
                         }
                       >
-                        {"Block"}
+                        {row.isBlocked ? "Unblock" : "Block"}
                       </Button>
                     </TableCell>
                   </TableRow>

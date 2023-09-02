@@ -24,10 +24,12 @@ const Login = () => {
   };
 
   const responseSuccessGoogle = (response) => {
-    console.log(response);
+    console.log(response,"successResponse");
   };
 
-  const responseErrorGoogle = (response) => {};
+  const responseErrorGoogle = (response) => {
+    console.log(response, "errorResopnse")
+  };
 
   return (
     <div className="login">
@@ -56,7 +58,7 @@ const Login = () => {
       </form>
       <div style={{ display: 'inline-block', marginTop: "500px",  marginLeft: '-270px' }}>
         <GoogleLogin
-          clientId="216708628570-soob9k2ln46nd1bc3v33rstpbhjec2af.apps.googleusercontent.com"
+          clientId="317376483006-sdkm96vr1lrkee0ei49vmcknid3057eq.apps.googleusercontent.com"
           buttonText="Sign in with Google"
           onSuccess={responseSuccessGoogle}
           onFailure={responseErrorGoogle}
