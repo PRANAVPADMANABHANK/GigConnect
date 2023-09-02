@@ -18,6 +18,11 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    confirmPassword: {
+      // Add the confirm password field
+      type: String,
+      required: true,
+    },
     img: {
       type: String,
       required: false,

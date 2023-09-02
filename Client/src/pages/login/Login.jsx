@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import newRequest from "../../utils/newRequest";
 import { Link, useNavigate } from "react-router-dom";
+import GoogleLogin from "react-google-login";
 import "./Login.scss";
 
 const Login = () => {
@@ -22,6 +23,12 @@ const Login = () => {
     }
   };
 
+  const responseSuccessGoogle = (response) => {
+    console.log(response);
+  };
+
+  const responseErrorGoogle = (response) => {};
+
   return (
     <div className="login">
       <form onSubmit={handleSubmit}>
@@ -38,15 +45,24 @@ const Login = () => {
         <input
           name="password"
           type="password"
-          placeholder="password"  
+          placeholder="password"
           onChange={(e) => setPassword(e.target.value)}
         />
         <Link to="/forgot-password">
           <h3 className="forgot-password">Forgot Password</h3>
         </Link>
-        <button type="submit">Login</button>
+        <button type="submit">Sign in</button>
         <span>{error && error}</span>
       </form>
+      <div style={{ display: 'inline-block', marginTop: "500px",  marginLeft: '-270px' }}>
+        <GoogleLogin
+          clientId="216708628570-soob9k2ln46nd1bc3v33rstpbhjec2af.apps.googleusercontent.com"
+          buttonText="Sign in with Google"
+          onSuccess={responseSuccessGoogle}
+          onFailure={responseErrorGoogle}
+          cookiePolicy={"single_host_origin"}
+        />
+      </div>
     </div>
   );
 };

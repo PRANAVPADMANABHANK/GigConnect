@@ -6,7 +6,14 @@ import Wallet from "../../core/entities/wallet.model.js";
 
 export const register = async (req, res, next) => {
   try {
+    // Check if the password and confirmPassword match
+    if (req.body.password !== req.body.confirmPassword) {
+      return res.status(400).json({ error: "Passwords do not match" });
+    }
+
+    // Hash both the password and confirmPassword
     const hash = bcrypt.hashSync(req.body.password, 5);
+    const confirmHash = bcrypt.hashSync(req.body.confirmPassword, 5);
 
     // Create a new Wallet for the user with default balance
     const newWallet = new Wallet({ balance: 0 });
@@ -15,6 +22,7 @@ export const register = async (req, res, next) => {
     const newUser = new User({
       ...req.body,
       password: hash,
+      confirmPassword: confirmHash, // Hashed confirmPassword
       wallet: newWallet._id, // Assign the wallet reference to the user
     });
     await newUser.save();
