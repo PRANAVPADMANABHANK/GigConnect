@@ -24,6 +24,11 @@ const OrderSchema = new Schema(
       type: String,
       required: true,
     },
+    submission: {
+      type: String,
+      required: true,
+      default: "Work in progress"
+    },
     sellerId: {
       type: String,
       required: true,

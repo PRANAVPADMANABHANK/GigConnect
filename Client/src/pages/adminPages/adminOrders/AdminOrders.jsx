@@ -13,9 +13,11 @@ import {
   Container,
   Box,
   Avatar,
+  Button,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../../utils/newRequest";
+import moment from "moment";
 
 const columns = [
   { id: "id", label: "No" },
@@ -28,7 +30,9 @@ const columns = [
   { id: "isCompleted", label: "Is Completed" },
   { id: "payment_intent", label: "Payment Intent" },
   { id: "createdAt", label: "Created At" },
-  {},
+  { id: "date", label: "Date" },
+  { id: "submission", label: "Work Submission" },
+  { id: "action", label: "Action" }, // New column for the action button
 ];
 
 const TableWithPagination = () => {
@@ -48,7 +52,6 @@ const TableWithPagination = () => {
     queryKey: ["orderList"],
     queryFn: () =>
       newRequest.get(`/admin/orders`).then((res) => {
-        console.log(res.data, "orderList");
         return res.data.map((order) => ({
           ...order,
           id: order._id, // Use _id as id
@@ -107,7 +110,7 @@ const TableWithPagination = () => {
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="elg">
       <Box mt={3}>
         <TextField
           label="Search"
@@ -139,23 +142,56 @@ const TableWithPagination = () => {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => (
                   <TableRow key={row.id}>
+                    {/* {console.log(row, "row")} */}
                     <TableCell>{page * rowsPerPage + index + 1}</TableCell>
                     <TableCell>
                       <Avatar alt={row.username} src={row.img} />
                     </TableCell>
                     {columns.slice(2, columns.length - 1).map((column) => (
                       <TableCell key={column.id}>
-                        {column.id === "createdAt" || column.id === "updatedAt"
-                          ? new Date(row[column.id]).toLocaleString() // Format date as a string
-                          : column.id === "isCompleted"
-                          ? row[column.id]
-                            ? "Yes"
-                            : "No"
-                          : column.id === "price"
-                          ? `$${row[column.id]}` // Add the dollar sign here
-                          : row[column.id]}
+                        {column.id === "createdAt" ||
+                        column.id === "updatedAt" ? (
+                          new Date(row[column.id]).toLocaleString()
+                        ) : column.id === "isCompleted" ? (
+                          row[column.id] ? (
+                            "Yes"
+                          ) : (
+                            "No"
+                          )
+                        ) : column.id === "price" ? (
+                          `$${row[column.id]}`
+                        ) : column.id === "status" ? (
+                          row[column.id] === "accepted" ? (
+                            "Approved"
+                          ) : (
+                            row[column.id]
+                          )
+                        ) : column.id === "date" ? (
+                          moment(row.updatedAt).fromNow() // Format date using moment
+                        ) : column.id === "submission" ? (
+                          <span
+                            style={{
+                              color:
+                                row.submission === "Work completed"
+                                  ? "green"
+                                  : "red",
+                            }}
+                          >
+                            {row.submission}
+                          </span>
+                        ) : (
+                          row[column.id]
+                        )}
                       </TableCell>
                     ))}
+
+                    <TableCell>
+                      {row.submission === "Work completed" ? (
+                        <Button variant="outlined">Approved</Button>
+                      ) : (
+                        "WL"
+                      )}
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>

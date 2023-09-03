@@ -110,7 +110,7 @@ const TableWithPagination = () => {
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="elg">
       <Box mt={3}>
         <TextField
           label="Search"

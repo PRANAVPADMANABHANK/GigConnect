@@ -1,7 +1,7 @@
 import createError from "../../utils/createError.js";
 import User from "../../core/entities/user.model.js";
 import Order from "../../core/entities/order.model.js";
-import Wallet from "../../core/entities/wallet.model.js"
+import Wallet from "../../core/entities/wallet.model.js";
 import Gig from "../../core/entities/gig.model.js";
 import { Types } from "mongoose"; // Import Types from mongoose
 import Stripe from "stripe";
@@ -27,7 +27,7 @@ export const intent = async (req, res, next) => {
     buyerId: req.userId,
     sellerId: gig.userId,
     price: gig.price,
-    status:"pending",
+    status: "pending",
     payment_intent: paymentIntent.id,
   });
 
@@ -45,37 +45,33 @@ export const getOrder = async (req, res, next) => {
     });
 
     const buyerIds = orders.map((order) => order.buyerId);
-    const sellerIds = orders.map((order) => order.sellerId); // Extract sellerIds from orders
-    // console.log(buyerIds, "buyerIds")
-    // console.log(sellerIds, "sellerIds")
+    const sellerIds = orders.map((order) => order.sellerId);
 
-    const buyers = await User.find({ _id: { $in: buyerIds } }, "username");
-    const sellers = await User.find({ _id: { $in: sellerIds } }, "username"); // Retrieve sellers' names
-    // console.log(buyers, "buyers")
-    // console.log(sellers," sellers")
+    // Fetch gig details for each order by matching gigId with _id in the Gig collection
+    const ordersWithGigDetails = await Promise.all(
+      orders.map(async (order) => {
+        const buyer = buyerIds.includes(order.buyerId)
+          ? await User.findById(order.buyerId, "username")
+          : null;
+        const seller = sellerIds.includes(order.sellerId)
+          ? await User.findById(order.sellerId, "username")
+          : null;
 
-    const ordersWithNames = orders.map((order) => {
-      const buyer = buyers.find((buyer) => buyer._id.equals(order.buyerId));
-      const seller = sellers.find((seller) =>
-        seller._id.equals(order.sellerId)
-      );
-      return {
-        ...order._doc,
-        buyerName: buyer ? buyer.username : "Unknown Buyer",
-        sellerName: seller ? seller.username : "Unknown Seller",
-      };
-    });
+        const gig = await Gig.findById(order.gigId);
 
-    // console.log(ordersWithNames, "ordersWithNames")
+        return {
+          ...order._doc,
+          buyerName: buyer ? buyer.username : "Unknown Buyer",
+          sellerName: seller ? seller.username : "Unknown Seller",
+          deliveryTime: gig ? gig.deliveryTime : "N/A",
+          revisionNumber: gig ? gig.revisionNumber : "N/A",
+        };
+      })
+    );
 
     res.status(200).json({
-      orders: ordersWithNames,
-      buyers,
-      sellers,
+      orders: ordersWithGigDetails,
     });
-
-    // console.log(orders, "orders")
-    // res.status(200).send(orders);
   } catch (error) {
     next(err);
   }
@@ -127,6 +123,7 @@ export const cancelWalletAmount = async (req, res, next) => {
         $match: {
           _id: id,
           isCompleted: true,
+          status: { $ne: "Cancelled" }, // Ensure the order is not already cancelled
         },
       },
       {
@@ -173,33 +170,61 @@ export const cancelWalletAmount = async (req, res, next) => {
     );
 
     // Update the status of the completed order to "Cancelled"
-    await Order.updateOne(
-      { _id: id },
-      { $set: { status: "Cancelled" } }
-    );
+    await Order.updateOne({ _id: id }, { $set: { status: "Cancelled" } });
 
-    
-    return res.status(200).json({ message: "Balance updated successfully", price: completedOrder[0].buyer.wallet[0].balance, status: completedOrder[0].status });
-
+    return res.status(200).json({
+      message: "Balance updated successfully",
+      price: completedOrder[0].buyer.wallet[0].balance,
+      status: completedOrder[0].status,
+    });
   } catch (error) {
     next(error);
   }
 };
 
-
-
-export const acceptOrder = async(req, res, next) => {
+export const acceptOrder = async (req, res, next) => {
   try {
     const id = new Types.ObjectId(req.params.id);
-    // Update the status of the completed order to "Cancelled"
-    await Order.updateOne(
-      { _id: id },
-      { $set: { status: "Accepted" } }
-    );
 
-    const status = await Order.findById(id)
-    return res.status(200).json({message: "Order accept successfull", status})
+    // Check if the order is not already in the "Accepted" state
+    const existingOrder = await Order.findOne({
+      _id: id,
+      status: { $ne: "Accepted" },
+    });
+
+    if (!existingOrder) {
+      return res.status(400).json({ message: "Order is already Accepted" });
+    }
+
+    // Update the status of the order to "Accepted"
+    await Order.updateOne({ _id: id }, { $set: { status: "Accepted" } });
+
+    const status = await Order.findById(id);
+    return res.status(200).json({ message: "Order accept successful", status });
   } catch (err) {
-    next(createError(error))
+    next(createError(error));
   }
-}
+};
+
+export const submitWork = async (req, res, next) => {
+  const id = req.params.id;
+
+  try {
+    // Find the order by ID
+    const order = await Order.findById(id);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Update the submission field to "Work completed"
+    order.submission = "Work completed";
+
+    // Save the updated order
+    await order.save();
+
+    res.status(200).json({ message: "Work submitted successfully" });
+  } catch (error) {
+    next(createError(error));
+  }
+};

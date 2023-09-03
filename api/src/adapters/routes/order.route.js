@@ -6,7 +6,8 @@ import {
   confirm,
   getOrderWithId,
   cancelWalletAmount,
-  acceptOrder
+  acceptOrder,
+  submitWork
 } from "../controllers/order.controller.js";
 
 const router = express.Router();
@@ -17,5 +18,6 @@ router.post("/create-payment-intent/:id", verifyToken, intent);
 router.put("/", verifyToken, confirm);
 router.get("/wallet/:id", verifyToken, cancelWalletAmount)
 router.get("/accept/:id", verifyToken, acceptOrder)
+router.get("/submission/:id", verifyToken, submitWork)
 
 export default router;

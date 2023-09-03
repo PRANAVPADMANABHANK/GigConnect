@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest.js";
+import moment from "moment";
 import "./Orders.scss";
 import { useNavigate } from "react-router-dom";
 import {
@@ -21,20 +22,37 @@ const Orders = () => {
   const navigate = useNavigate();
 
   const [cancelConfirmation, setCancelConfirmation] = useState(false);
-  const [acceptConfirmation, setAcceptConfirmation] = useState(false)
+  const [acceptConfirmation, setAcceptConfirmation] = useState(false);
+  const [submissionConfirmation, setSubmissionConfirmation] = useState(false); // New state for submission confirmation
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [alertMessage, setAlertMessage] = useState(""); // State to store the alert message
   const [alertType, setAlertType] = useState(""); // State to store the alert type
+  const [isSubmissionDisabled, setIsSubmissionDisabled] = useState(false); // State to track submission button disabled state
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["orders"],
     queryFn: () =>
       newRequest.get(`/orders`).then((res) => {
-        console.log(res.data.orders[0].status, "orders");
+        console.log(res.data.orders[0], "orders");
         const status = res.data.orders[0].status;
         return res.data;
       }),
   });
+
+  useEffect(() => {
+    // Calculate submission button disabled state here
+    if (data && data.orders) {
+      const isDisabled = data.orders.some((order) => {
+        const deliveryDate = moment(order.updatedAt)
+          .add(order.deliveryTime, "days")
+          .endOf("day"); // Set the end of the day for accurate comparison
+        const currentDate = moment().endOf("day"); // Set the end of the day for accurate comparison
+        return currentDate.isAfter(deliveryDate);
+      });
+      setIsSubmissionDisabled(isDisabled);
+    }
+  }, [data]);
+  
 
   const handleContact = async (order) => {
     const sellerId = order.sellerId;
@@ -54,15 +72,19 @@ const Orders = () => {
   };
 
   const handleAccept = (order) => {
-    console.log(order._id,"order accept id")
+    console.log(order._id, "order accept id");
     setSelectedOrder(order);
     setAcceptConfirmation(true);
-
-  }
+  };
 
   const handleCancel = (order) => {
     setSelectedOrder(order);
     setCancelConfirmation(true);
+  };
+
+  const handleSubmissionConfirmation = (order) => {
+    setSelectedOrder(order);
+    setSubmissionConfirmation(true);
   };
 
   const handleCancelConfirmed = async () => {
@@ -84,21 +106,18 @@ const Orders = () => {
         // Navigating to wallet page with price as a query parameter
       } catch (error) {
         // Update the alert state with an error message and type
-        setAlertMessage("An error occurred");
+        setAlertMessage("An error occurred / Already Cancelled.");
         setAlertType("error");
       }
     }
   };
 
-  
-
   const handleAcceptConfirmed = async () => {
     setAcceptConfirmation(false);
-    console.log("acceptance")
+    console.log("acceptance");
     if (selectedOrder) {
       console.log("Cancelling order:", selectedOrder._id);
       try {
-         
         const response = await newRequest.get(
           `/orders/accept/${selectedOrder._id}`,
           selectedOrder._id
@@ -113,11 +132,29 @@ const Orders = () => {
         // Navigating to wallet page with price as a query parameter
       } catch (error) {
         // Update the alert state with an error message and type
-        setAlertMessage("An error occurred");
+        setAlertMessage("An error occurred / Already Accepted.");
         setAlertType("error");
       }
     }
   };
+
+  const handleSubmitWork = async (order) => {
+    setSubmissionConfirmation(false);
+    console.log(order._id, "submit work");
+    try {
+      const response = await newRequest.get(`/orders/submission/${order._id}`);
+      console.log(response.data, "work submission response");
+
+      // Update the alert state with the response message and type
+      setAlertMessage(response.data.message);
+      setAlertType("success");
+    } catch (error) {
+      // Handle errors here and update the alert state accordingly
+      setAlertMessage("An error occurred.");
+      setAlertType("error");
+    }
+  };
+  
 
   return (
     <div className="orders">
@@ -155,7 +192,11 @@ const Orders = () => {
                 <th>{currentUser?.isSeller ? "Action" : "Order Status"}</th>
                 {currentUser?.isSeller && <th>Order Status</th>}
                 <th>Price</th>
+                <th>Delivery Time</th>
+                <th>Date</th>
+                <th>Revision Number</th>
                 <th>Contact</th>
+                {currentUser?.isSeller && <th>Submission</th>}
               </tr>
             </thead>
             <tbody>
@@ -166,17 +207,16 @@ const Orders = () => {
                   </td>
                   <td>{order.title}</td>
                   <td>
-                    {!currentUser.isSeller
-                      ? data.sellers.find(
-                          (seller) => seller._id === order.sellerId
-                        )?.username
-                      : data.buyers.find((buyer) => buyer._id === order.buyerId)
-                          ?.username}
+                    {!currentUser.isSeller ? order.sellerName : order.buyerName}
                   </td>
                   <td>
                     {currentUser.isSeller ? (
                       <Stack direction="row" spacing={1}>
-                        <IconButton aria-label="accept" color="success" onClick={()=>handleAccept(order,)}>
+                        <IconButton
+                          aria-label="accept"
+                          color="success"
+                          onClick={() => handleAccept(order)}
+                        >
                           <CheckCircle />
                         </IconButton>
                         <IconButton
@@ -194,6 +234,13 @@ const Orders = () => {
                   {currentUser?.isSeller && <td>{order.status}</td>}
                   <td>${order.price}</td>
                   <td>
+                    {order.deliveryTime === 1
+                      ? "1 Day"
+                      : `${order.deliveryTime} Days`}
+                  </td>
+                    <td>{moment(order.updatedAt).fromNow()}</td>
+                  <td>{order.revisionNumber} Times</td>
+                  <td>
                     <img
                       className="message"
                       src="./img/message.png"
@@ -201,6 +248,24 @@ const Orders = () => {
                       onClick={() => handleContact(order, true)}
                     />
                   </td>
+                  {currentUser?.isSeller && (
+                    <td>
+                    {order.status === "Accepted" ? (
+                      order.submission === "Work completed" ? (
+                        <strong style={{ color: "green" }}>Work Completed</strong>
+                      ) : (
+                        <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={() => handleSubmissionConfirmation(order)}
+                              disabled={isSubmissionDisabled}
+                            >
+                              Submit Work
+                            </Button>
+                      )
+                    ) : null}
+                  </td>
+                  )}
                 </tr>
               ))}
             </tbody>
@@ -251,6 +316,30 @@ const Orders = () => {
             </Button>
             <Button onClick={handleAcceptConfirmed} color="error">
               Yes
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
+       {submissionConfirmation && (
+        <Dialog
+          open={submissionConfirmation}
+          onClose={() => setSubmissionConfirmation(false)}
+        >
+          <DialogTitle>Confirm Submission</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to submit this work?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setSubmissionConfirmation(false)}
+              color="primary"
+            >
+              Cancel
+            </Button>
+            <Button onClick={() => handleSubmitWork(selectedOrder)} color="primary">
+              Confirm
             </Button>
           </DialogActions>
         </Dialog>

@@ -64,7 +64,7 @@ function MyGigs() {
               </td>
               <td>{gig.title}</td>
               <td>
-                {gig.price}
+                ${gig.price}
               </td>
               <td>{gig.sales}</td>
               <td>

@@ -36,8 +36,6 @@ const App = () => {
 
   const currentAdmin = JSON.parse(localStorage.getItem("currentAdmin"));
 
-  console.log(currentAdmin, "currentAdmin");
-
   const handleListItemClick = (item) => {
     setSelected(item);
     setOpen(false);
@@ -82,7 +80,7 @@ const App = () => {
                 <DashboardIcon />
               </ListItemIcon>
               <ListItemText
-                primary="Dashboard"
+                primary="Orders"
                 style={{
                   color: selected === "dashboard" ? "blue" : "inherit",
                 }}

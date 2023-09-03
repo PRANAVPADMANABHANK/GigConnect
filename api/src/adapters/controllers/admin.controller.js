@@ -109,6 +109,7 @@ export const getOrders = async (req, res) => {
           title: order.title,
           price: order.price,
           status: order.status,
+          submission: order.submission,
           sellerId: order.sellerId,
           sellerName: seller ? seller.username : "", // Get seller name or an empty string if not found
           buyerId: order.buyerId,
