@@ -110,6 +110,7 @@ export const getOrders = async (req, res) => {
           price: order.price,
           status: order.status,
           submission: order.submission,
+          received: order.received,
           sellerId: order.sellerId,
           sellerName: seller ? seller.username : "", // Get seller name or an empty string if not found
           buyerId: order.buyerId,
@@ -149,5 +150,28 @@ export const userBlocked = async (req, res, next) => {
     return res.status(200).json(updatedUser);
   } catch (error) {
     next(error);
+  }
+};
+
+export const workReceived = async (req, res, next) => {
+  const id = req.params.id;
+
+  try {
+    // Use findOneAndUpdate to update the received field
+    const updatedOrder = await Order.findOneAndUpdate(
+      { _id: id },
+      { received: "Work received" },
+      { new: true } // To get the updated document as the result
+    );
+
+    if (!updatedOrder) {
+      // If the order with the given id is not found, return an error
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Send the updated order as a response
+    res.json(updatedOrder);
+  } catch (error) {
+    next(createError(error));
   }
 };

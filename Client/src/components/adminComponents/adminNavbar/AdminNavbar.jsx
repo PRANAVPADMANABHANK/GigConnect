@@ -68,7 +68,7 @@ const App = () => {
             <ListItem
               button
               component={Link}
-              to="/admin/dashboard"
+              to="/admin/orders"
               onClick={() => handleListItemClick("dashboard")}
               selected={selected === "dashboard"}
             >

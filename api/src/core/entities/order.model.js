@@ -29,6 +29,11 @@ const OrderSchema = new Schema(
       required: true,
       default: "Work in progress"
     },
+    received: {
+      type: String,
+      required: true,
+      default: "Work not received"
+    },
     sellerId: {
       type: String,
       required: true,

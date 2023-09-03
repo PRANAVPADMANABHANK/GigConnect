@@ -31,7 +31,8 @@ const columns = [
   { id: "payment_intent", label: "Payment Intent" },
   { id: "createdAt", label: "Created At" },
   { id: "date", label: "Date" },
-  { id: "submission", label: "Work Submission" },
+  { id: "submission", label: "Work Submission by Seller" },
+  { id: "submissionToBuyer", label: "Work Submission to Buyer" },
   { id: "action", label: "Action" }, // New column for the action button
 ];
 
@@ -71,10 +72,10 @@ const TableWithPagination = () => {
     return <div>Error: {error.message}</div>;
   }
 
-  const handleToggleSeller = (userId, isSeller) => {
-    console.log(userId, "userId");
-    console.log(isSeller, "isSeller");
-    // Implement logic to toggle isSeller status and update it on the server
+  const handleApproved = async (orderId) => {
+    console.log(orderId, "orderId");
+    const response = await newRequest.put(`/admin/received/${orderId}`);
+    console.log(response.data, "received resoponse");
   };
 
   const filteredData = data.filter((row) =>
@@ -179,6 +180,19 @@ const TableWithPagination = () => {
                           >
                             {row.submission}
                           </span>
+                        ) : column.id === "submissionToBuyer" ? (
+                          <span
+                            style={{
+                              color:
+                                row.received === "Work received"
+                                  ? "green"
+                                  : "orange",
+                            }}
+                          >
+                            {row.received === "Work received"
+                              ? "Work Sent to Buyer"
+                              : "Work Not Sent to Buyer"}
+                          </span>
                         ) : (
                           row[column.id]
                         )}
@@ -187,7 +201,12 @@ const TableWithPagination = () => {
 
                     <TableCell>
                       {row.submission === "Work completed" ? (
-                        <Button variant="outlined">Approved</Button>
+                        <Button
+                          variant="outlined"
+                          onClick={() => handleApproved(row._id)}
+                        >
+                          Approved
+                        </Button>
                       ) : (
                         "WL"
                       )}

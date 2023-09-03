@@ -132,7 +132,7 @@ function App() {
 
         // Admin routes
         {
-          path: "/admin/dashboard",
+          path: "/admin/orders",
           element: <AdminOrders/>
         },
         {
