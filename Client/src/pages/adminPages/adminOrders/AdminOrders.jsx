@@ -47,7 +47,8 @@ const TableWithPagination = () => {
   const [orderBy, setOrderBy] = useState("");
   const [order, setOrder] = useState("asc");
   const [searchTerm, setSearchTerm] = useState("");
-  const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
+  const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] =
+    useState(false);
   const [orderIdForApproval, setOrderIdForApproval] = useState(null);
 
   const handleSortRequest = (property) => {
@@ -92,7 +93,9 @@ const TableWithPagination = () => {
     // Perform the approval action
     if (orderIdForApproval) {
       console.log(orderIdForApproval, "orderId");
-      const response = await newRequest.put(`/admin/received/${orderIdForApproval}`);
+      const response = await newRequest.put(
+        `/admin/received/${orderIdForApproval}`
+      );
       console.log(response.data, "received response");
     }
   };
