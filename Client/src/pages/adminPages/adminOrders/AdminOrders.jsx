@@ -1,19 +1,24 @@
 import React, { useState } from "react";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  Paper,
-  TextField,
-  TableSortLabel,
+  // ... other imports
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
   Container,
   Box,
+  TextField,
+  TableContainer,
+  Table,
+  TableHead,
+  Paper,
+  TableRow,
+  TableCell,
+  TableSortLabel,
+  TableBody,
   Avatar,
-  Button,
+  TablePagination,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../../utils/newRequest";
@@ -42,6 +47,8 @@ const TableWithPagination = () => {
   const [orderBy, setOrderBy] = useState("");
   const [order, setOrder] = useState("asc");
   const [searchTerm, setSearchTerm] = useState("");
+  const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
+  const [orderIdForApproval, setOrderIdForApproval] = useState(null);
 
   const handleSortRequest = (property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -72,10 +79,22 @@ const TableWithPagination = () => {
     return <div>Error: {error.message}</div>;
   }
 
-  const handleApproved = async (orderId) => {
-    console.log(orderId, "orderId");
-    const response = await newRequest.put(`/admin/received/${orderId}`);
-    console.log(response.data, "received resoponse");
+  const handleApproved = (orderId) => {
+    // Open the confirmation dialog
+    setOrderIdForApproval(orderId);
+    setIsConfirmationDialogOpen(true);
+  };
+
+  const handleConfirmation = async () => {
+    // Close the confirmation dialog
+    setIsConfirmationDialogOpen(false);
+
+    // Perform the approval action
+    if (orderIdForApproval) {
+      console.log(orderIdForApproval, "orderId");
+      const response = await newRequest.put(`/admin/received/${orderIdForApproval}`);
+      console.log(response.data, "received response");
+    }
   };
 
   const filteredData = data.filter((row) =>
@@ -226,6 +245,28 @@ const TableWithPagination = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Box>
+
+      {/* Confirmation Dialog */}
+      <Dialog
+        open={isConfirmationDialogOpen}
+        onClose={() => setIsConfirmationDialogOpen(false)}
+      >
+        <DialogTitle>Confirmation</DialogTitle>
+        <DialogContent>
+          Are you sure you want to approve this order?
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setIsConfirmationDialogOpen(false)}
+            color="primary"
+          >
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmation} color="primary">
+            Approve
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };

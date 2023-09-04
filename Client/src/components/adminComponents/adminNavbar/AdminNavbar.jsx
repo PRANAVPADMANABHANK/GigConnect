@@ -12,6 +12,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import ChatIcon from "@mui/icons-material/Chat";
 import MenuIcon from "@mui/icons-material/Menu";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from "@mui/icons-material/Person";
@@ -68,7 +69,7 @@ const App = () => {
             <ListItem
               button
               component={Link}
-              to="/admin/orders"
+              to="/admin/dashboard"
               onClick={() => handleListItemClick("dashboard")}
               selected={selected === "dashboard"}
             >
@@ -80,9 +81,30 @@ const App = () => {
                 <DashboardIcon />
               </ListItemIcon>
               <ListItemText
-                primary="Orders"
+                primary="Dashboard"
                 style={{
                   color: selected === "dashboard" ? "blue" : "inherit",
+                }}
+              />
+            </ListItem>
+            <ListItem
+              button
+              component={Link}
+              to="/admin/orders"
+              onClick={() => handleListItemClick("orders")}
+              selected={selected === "orders"}
+            >
+              <ListItemIcon
+                style={{
+                  color: selected === "orders" ? "blue" : "inherit",
+                }}
+              >
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Orders"
+                style={{
+                  color: selected === "orders" ? "blue" : "inherit",
                 }}
               />
             </ListItem>
@@ -104,6 +126,28 @@ const App = () => {
                 primary="Users"
                 style={{
                   color: selected === "profile" ? "blue" : "inherit",
+                }}
+              />
+            </ListItem>
+
+            <ListItem
+              button
+              component={Link}
+              to="/admin/chat"
+              onClick={() => handleListItemClick("chat")}
+              selected={selected === "chat"}
+            >
+              <ListItemIcon
+                style={{
+                  color: selected === "chat" ? "blue" : "inherit",
+                }}
+              >
+                <ChatIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Chat"
+                style={{
+                  color: selected === "chat" ? "blue" : "inherit",
                 }}
               />
             </ListItem>

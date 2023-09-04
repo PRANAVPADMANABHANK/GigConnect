@@ -58,7 +58,7 @@ export default function SignIn() {
 
       if (response.statusText === "OK") {
         /// Successfully logged in, navigate to the dashboard
-        navigate('/admin/orders');
+        navigate('/admin/dashboard');
       } else {
         // Handle login failure (e.g., display error message)
         console.log("Login failed");

@@ -33,6 +33,9 @@ import UserList from "../../Client/src/pages/adminPages/userList/UserList"
 import AdminLogin from "../../Client/src/pages/adminPages/adminLogin/AdminLogin"
 import AdminOrders from "../../Client/src/pages/adminPages/adminOrders/AdminOrders"
 import Wallet from "./pages/wallet/Wallet";
+import AdminDashboard from "./pages/adminPages/adminDashboard/AdminDashboard";
+import adminChat from "./pages/adminPages/adminChat/AdminChat";
+import AdminChat from "./pages/adminPages/adminChat/AdminChat";
 
 function App() {
   const queryClient = new QueryClient();
@@ -132,6 +135,14 @@ function App() {
 
         // Admin routes
         {
+          path: "/admin/Register",
+          element: <AdminLogin/>
+        },
+        {
+          path: "/admin/dashboard",
+          element: <AdminDashboard/>
+        },
+        {
           path: "/admin/orders",
           element: <AdminOrders/>
         },
@@ -140,8 +151,8 @@ function App() {
           element: <UserList/>
         },
         {
-          path: "/admin/Register",
-          element: <AdminLogin/>
+          path: "/admin/chat",
+          element: <AdminChat/>
         },
         {
           path: "/admin/*",

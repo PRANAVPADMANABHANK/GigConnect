@@ -52,7 +52,6 @@ const Orders = () => {
       setIsSubmissionDisabled(isDisabled);
     }
   }, [data]);
-  
 
   const handleContact = async (order) => {
     const sellerId = order.sellerId;
@@ -154,7 +153,6 @@ const Orders = () => {
       setAlertType("error");
     }
   };
-  
 
   return (
     <div className="orders">
@@ -196,6 +194,7 @@ const Orders = () => {
                 <th>Date</th>
                 <th>Revision Number</th>
                 <th>Contact</th>
+                {!currentUser?.isSeller && <th>Work Progress</th>}
                 {currentUser?.isSeller && <th>Submission</th>}
               </tr>
             </thead>
@@ -238,8 +237,9 @@ const Orders = () => {
                       ? "1 Day"
                       : `${order.deliveryTime} Days`}
                   </td>
-                    <td>{moment(order.updatedAt).fromNow()}</td>
+                  <td>{moment(order.updatedAt).fromNow()}</td>
                   <td>{order.revisionNumber} Times</td>
+
                   <td>
                     <img
                       className="message"
@@ -248,23 +248,34 @@ const Orders = () => {
                       onClick={() => handleContact(order, true)}
                     />
                   </td>
+                  {!currentUser?.isSeller && <td
+                    style={{
+                      color:
+                        order.received === "Work received" ? "green" : "red",
+                    }}
+                  >
+                    {order.received}
+                  </td>}
+
                   {currentUser?.isSeller && (
                     <td>
-                    {order.status === "Accepted" ? (
-                      order.submission === "Work completed" ? (
-                        <strong style={{ color: "green" }}>Work Completed</strong>
-                      ) : (
-                        <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={() => handleSubmissionConfirmation(order)}
-                              disabled={isSubmissionDisabled}
-                            >
-                              Submit Work
-                            </Button>
-                      )
-                    ) : null}
-                  </td>
+                      {order.status === "Accepted" ? (
+                        order.submission === "Work completed" ? (
+                          <strong style={{ color: "green" }}>
+                            Work Completed
+                          </strong>
+                        ) : (
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleSubmissionConfirmation(order)}
+                            disabled={isSubmissionDisabled}
+                          >
+                            Submit Work
+                          </Button>
+                        )
+                      ) : null}
+                    </td>
                   )}
                 </tr>
               ))}
@@ -320,7 +331,7 @@ const Orders = () => {
           </DialogActions>
         </Dialog>
       )}
-       {submissionConfirmation && (
+      {submissionConfirmation && (
         <Dialog
           open={submissionConfirmation}
           onClose={() => setSubmissionConfirmation(false)}
@@ -338,7 +349,10 @@ const Orders = () => {
             >
               Cancel
             </Button>
-            <Button onClick={() => handleSubmitWork(selectedOrder)} color="primary">
+            <Button
+              onClick={() => handleSubmitWork(selectedOrder)}
+              color="primary"
+            >
               Confirm
             </Button>
           </DialogActions>
