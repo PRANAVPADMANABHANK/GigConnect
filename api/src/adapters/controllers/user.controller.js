@@ -152,3 +152,21 @@ export const resetPassword = async (req, res, next) => {
   });
 };
 
+
+
+//search users in chat using queries
+export const allUsers = async (req, res) => {
+
+  console.log(req.userId, "userId")
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { username: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+
+  const users = await User.find(keyword).find({ _id: { $ne: req.userId } });;
+  res.send(users);
+};

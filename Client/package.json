@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.8.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@faker-js/faker": "^8.0.2",
@@ -24,6 +25,7 @@
     "@tanstack/react-query": "^4.32.0",
     "animejs": "^3.2.1",
     "axios": "^1.4.0",
+    "framer-motion": "^10.16.2",
     "infinite-react-carousel": "^1.2.11",
     "js-cookie": "^3.0.5",
     "mdb-react-ui-kit": "^6.1.0",

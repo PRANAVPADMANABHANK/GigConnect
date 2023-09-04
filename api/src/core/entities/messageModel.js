@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
+//realtime messages schema
 const MessagesSchema = new Schema(
   {
     sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

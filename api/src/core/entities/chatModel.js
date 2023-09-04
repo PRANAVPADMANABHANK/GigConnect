@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
+//realtime chat schema
 const chatModel = new Schema(
   {
     chatName: { type: String, trim: true },

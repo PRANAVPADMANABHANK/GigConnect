@@ -1,6 +1,7 @@
 import User from "../../core/entities/user.model.js";
 import Order from "../../core/entities/order.model.js";
 import Admin from "../../core/entities/adminRegister.model.js";
+import Chat from "../../core/entities/chatModel.js"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import createError from "../../utils/createError.js";
@@ -50,6 +51,7 @@ export const adminRegister = async (req, res) => {
 };
 
 export const adminLogin = async (req, res, next) => {
+  console.log("adminLogin");
   const { email, password } = req.body; // Extract email and password from the request body
 
   try {
@@ -175,3 +177,5 @@ export const workReceived = async (req, res, next) => {
     next(createError(error));
   }
 };
+
+

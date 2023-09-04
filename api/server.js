@@ -10,6 +10,7 @@ import reviewRoute from "./src/adapters/routes/review.route.js";
 import authRoute from "./src/adapters/routes/auth.route.js";
 import walletRoute from "./src/adapters/routes/wallet.route.js";
 import adminRoute from "./src/adapters/routes/admin.route.js"
+import chatRoute from "./src/adapters/routes/chat.route.js"
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -43,6 +44,7 @@ app.use("/api/conversations", conversationRoute);
 app.use("/api/messages", messageRoute); 
 app.use("/api/reviews", reviewRoute);
 app.use("/api/wallets", walletRoute);
+app.use("/api/chat", chatRoute)
 app.use("/api/admin", adminRoute)
 
 //error handling middleware
