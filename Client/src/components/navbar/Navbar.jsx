@@ -74,8 +74,11 @@ function Navbar() {
                   <Link className="link" to="/orders">
                     Orders
                   </Link>
+                  <Link className="link" to="/chat">
+                    Live Chat
+                  </Link>
                   <Link className="link" to="/messages">
-                    Messages
+                    Reminders
                   </Link>
                   <Link className="link" onClick={handleLogout}>
                     Logout

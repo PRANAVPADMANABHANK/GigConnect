@@ -36,6 +36,7 @@ import Wallet from "./pages/wallet/Wallet";
 import AdminDashboard from "./pages/adminPages/adminDashboard/AdminDashboard";
 import adminChat from "./pages/adminPages/adminChat/AdminChat";
 import AdminChat from "./pages/adminPages/adminChat/AdminChat";
+import Chatpage from "./pages/chat/ChatPage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -126,6 +127,10 @@ function App() {
         {
           path: "/reset-password/:id/:token",
           element:<ResetPassword/>
+        },
+        {
+          path: "/chat",
+          element:<Chatpage/>
         },
         {
           path: "*",
