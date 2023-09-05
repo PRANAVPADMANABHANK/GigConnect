@@ -51,7 +51,6 @@ export const adminRegister = async (req, res) => {
 };
 
 export const adminLogin = async (req, res, next) => {
-  console.log("adminLogin");
   const { email, password } = req.body; // Extract email and password from the request body
 
   try {
