@@ -3,14 +3,12 @@ import User from "../../core/entities/user.model.js";
 
 //-----------------------------------------socket.io part-----------------------------------------//
 
-
 //@description     Create or fetch One to One Chat
 //@route           POST /api/chat/
 //@access          verifyToken
 export const accessChat = async (req, res) => {
   const { userId } = req.body;
 
-  console.log(req.body, "req.body");
 
   if (!userId) {
     console.log("UserId param not sent with request");
@@ -55,7 +53,6 @@ export const accessChat = async (req, res) => {
   }
 };
 
-
 //@description     Fetch all chats for a user
 //@route           GET /api/chat/
 //@access          verifyToken
@@ -73,6 +70,43 @@ export const fetchChats = async (req, res) => {
         });
         res.status(200).send(results);
       });
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
+};
+
+//@description     Create New Group Chat
+//@route           POST /api/chat/group
+//@access          verifyToken
+export const createGroupChat = async (req, res) => {
+  if (!req.body.users || !req.body.name) {
+    return res.status(400).send({ message: "Please Fill all the feilds" });
+  }
+
+  var users = JSON.parse(req.body.users);
+
+  if (users.length < 2) {
+    return res
+      .status(400)
+      .send("More than 2 users are required to form a group chat");
+  }
+
+  users.push(req.userId);
+
+  try {
+    const groupChat = await Chat.create({
+      chatName: req.body.name,
+      users: users,
+      isGroupChat: true,
+      groupAdmin: req.user,
+    });
+
+    const fullGroupChat = await Chat.findOne({ _id: groupChat._id })
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password");
+
+    res.status(200).json(fullGroupChat);
   } catch (error) {
     res.status(400);
     throw new Error(error.message);
