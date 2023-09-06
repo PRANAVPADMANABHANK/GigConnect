@@ -23,7 +23,7 @@ import AddIcon from "@mui/icons-material/Add";
 import UserListItem from "../userAvatar/UserListItem";
 import CancelIcon from "@mui/icons-material/Cancel";
 
-const MyChats = () => {
+const MyChats = ({fetchAgain}) => {
   const [loggedUser, setLoggedUser] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false); // State to control the modal
   const [groupChatName, setGroupChatName] = useState();
@@ -49,7 +49,7 @@ const MyChats = () => {
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("currentUser")));
     fetchChats();
-  }, []);
+  }, [fetchAgain]);
 
   // Function to open the modal
   const openModal = () => {
@@ -75,6 +75,7 @@ const MyChats = () => {
       setSearchResult(data);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
   const handleSubmit = async() => {

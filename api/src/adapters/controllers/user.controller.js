@@ -3,7 +3,7 @@ import createError from "../../utils/createError.js";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -118,46 +118,39 @@ export const forgotPassword = async (req, res, next) => {
       res.status(404).json({ message: "User not found." });
     }
   } catch (error) {
-    return next(createError(500, "Server error."))
+    return next(createError(500, "Server error."));
   }
 };
-
-
-
 
 export const resetPassword = async (req, res, next) => {
   console.log("reset password");
 
   const { id, token } = req.params;
   const password = req.body.value;
-  console.log(password, "password")
+  console.log(password, "password");
 
   jwt.verify(token, process.env.JWT_KEY, async (err, decoded) => {
     if (err) {
       return next(createError(401, "Error with token")); // Sending a 401 Unauthorized status
     } else {
-      const hashPassword = bcrypt.hashSync(password, 10)
-      console.log(hashPassword,"hashPassword")
+      const hashPassword = bcrypt.hashSync(password, 10);
+      console.log(hashPassword, "hashPassword");
       try {
         // Your password reset logic here
-        
+
         // Assuming you're updating the password for the user with the given ID
-        await User.findByIdAndUpdate(id, { password : hashPassword });
-        
+        await User.findByIdAndUpdate(id, { password: hashPassword });
+
         res.status(200).send("Password reset successful"); // Sending a success response
       } catch (error) {
-        next(error); 
+        next(error);
       }
     }
   });
 };
 
-
-
 //search users in chat using queries
 export const allUsers = async (req, res) => {
-
-  console.log(req.userId, "userId")
   const keyword = req.query.search
     ? {
         $or: [
@@ -167,6 +160,6 @@ export const allUsers = async (req, res) => {
       }
     : {};
 
-  const users = await User.find(keyword).find({ _id: { $ne: req.userId } });;
+  const users = await User.find(keyword).find({ _id: { $ne: req.userId } });
   res.send(users);
 };

@@ -98,7 +98,7 @@ export const createGroupChat = async (req, res) => {
       chatName: req.body.name,
       users: users,
       isGroupChat: true,
-      groupAdmin: req.user,
+      groupAdmin: req.userId,
     });
 
     const fullGroupChat = await Chat.findOne({ _id: groupChat._id })
