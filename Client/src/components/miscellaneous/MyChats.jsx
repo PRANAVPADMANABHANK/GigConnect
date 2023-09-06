@@ -37,7 +37,8 @@ const MyChats = ({fetchAgain}) => {
 
   const fetchChats = async () => {
     try {
-      const { data } = await newRequest.get(`/chat`);
+      const { data } = await newRequest.get("/chat");
+      console.log(data, "data")
       setChats(data);
 
       //   onClose();

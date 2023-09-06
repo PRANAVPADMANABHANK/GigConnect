@@ -1,14 +1,66 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useChatState } from "../../context/ChatProvider";
-import { Box, IconButton, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  FormControl,
+  IconButton,
+  Input,
+  TextField,
+  Typography,
+} from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { getSender, getSenderFull } from "../../config/ChatLogics";
 import ProfileModal from "../miscellaneous/ProfileModal";
 import UpdateGroupChatModal from "../miscellaneous/UpdateGroupChatModal";
+import newRequest from "../../utils/newRequest";
+import ScrollableChat from "./ScrollableChat";
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [newMessage, setNewMessage] = useState("");
   const { user, selectedChat, setSelectedChat } = useChatState();
 
+  const fetchMessages = async () => {
+    if (!selectedChat) return;
+
+    try {
+      setLoading(true);
+
+      const { data } = await newRequest.get(`/message/${selectedChat._id}`);
+      setMessages(data);
+      setLoading(false);
+    } catch (error) {
+      console.log("Error Occured");
+    }
+  };
+
+  useEffect(() => {
+    fetchMessages();
+  }, [selectedChat]);
+
+  const sendMessage = async (event) => {
+    console.log(event.target.value, "ooo");
+    if (event.key === "Enter" && newMessage) {
+      try {
+        setMessages("");
+        console.log(newMessage, "newMessage");
+        const response = await newRequest.post("/message", {
+          content: newMessage,
+          chatId: selectedChat._id,
+        });
+
+        setNewMessage("");
+        setMessages([...messages, response.data]);
+      } catch (error) {
+        console.log("Error Occured!");
+      }
+    }
+  };
+  const typingHandler = (e) => {
+    setNewMessage(e.target.value);
+  };
   return (
     <>
       {selectedChat ? (
@@ -37,13 +89,38 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               <>
                 {selectedChat.chatName.toUpperCase()}
                 <UpdateGroupChatModal
-            //   fetchMessages={fetchMessages}
-              fetchAgain={fetchAgain}
-              setFetchAgain={setFetchAgain}
-            />
+                  fetchAgain={fetchAgain}
+                  setFetchAgain={setFetchAgain}
+                  fetchMessages={fetchMessages}
+                />
               </>
             )}
           </Typography>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="60vh"
+          >
+            {loading ? (
+              <CircularProgress size={70} thickness={2} />
+            ) : (
+              <>
+                <div className="messages"><ScrollableChat messages={messages}/></div>
+              </>
+            )}
+          </Box>
+          <FormControl isRequired mt={3} fullWidth>
+            <TextField
+              fullWidth
+              id="standard-basic"
+              label="Enter a message..."
+              variant="standard"
+              onChange={(e) => setNewMessage(e.target.value)}
+              onKeyPress={sendMessage}
+              value={newMessage}
+            />
+          </FormControl>
         </>
       ) : (
         <Box

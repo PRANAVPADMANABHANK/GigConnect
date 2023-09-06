@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 //realtime messages schema
-const MessagesSchema = new Schema(
+const RealTimeMessageSchema = new Schema(
   {
     sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     content: { type: String, trim: true },
@@ -12,4 +12,4 @@ const MessagesSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Mess", MessagesSchema);
+export default mongoose.model("RealTimeMessage", RealTimeMessageSchema);

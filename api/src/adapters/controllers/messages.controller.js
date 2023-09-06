@@ -1,13 +1,13 @@
 import User from "../../core/entities/user.model.js";
 import Chat from "../../core/entities/chatModel.js";
-import Message from "../../core/entities/messageModel.js";
+import RealTimeMessage from "../../core/entities/messagesModel.js";
 
 //@description     Get all Messages
 //@route           GET /api/Message/:chatId
 //@access          verifyToken
 export const allMessages = async (req, res) => {
   try {
-    const messages = await Message.find({ chat: req.params.chatId })
+    const messages = await RealTimeMessage.find({ chat: req.params.chatId })
       .populate("sender", "username img email")
       .populate("chat");
     res.json(messages);
@@ -35,7 +35,7 @@ export const sendMessage = async (req, res) => {
   };
 
   try {
-    var message = await Message.create(newMessage);
+    var message = await RealTimeMessage.create(newMessage);
 
     message = await message.populate("sender", "username img");
     message = await message.populate("chat");
