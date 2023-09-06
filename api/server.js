@@ -11,6 +11,7 @@ import authRoute from "./src/adapters/routes/auth.route.js";
 import walletRoute from "./src/adapters/routes/wallet.route.js";
 import adminRoute from "./src/adapters/routes/admin.route.js"
 import chatRoute from "./src/adapters/routes/chat.route.js"
+import messagesRoutes from "./src/adapters/routes/messages.route.js"
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -46,6 +47,7 @@ app.use("/api/reviews", reviewRoute);
 app.use("/api/wallets", walletRoute);
 app.use("/api/chat", chatRoute)
 app.use("/api/admin", adminRoute)
+app.use("/api/message", messagesRoutes);
 
 //error handling middleware
 app.use((err, req, res, next) => {
