@@ -78,7 +78,22 @@ const MyChats = () => {
     }
   };
   const handleSubmit = async() => {
-    
+    if(!groupChatName || !selectedUsers){
+      alert("Please fill all the fields")
+      return;
+    }
+
+    try {
+      const {data} = await newRequest.post("/chat/group", {
+        name: groupChatName,
+        users: JSON.stringify(selectedUsers.map((u)=>u._id))
+      })
+      setChats([data, ...chats])
+      closeModal(); // Close the modal
+      alert("New Group Chat Created")
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const handleDelete = (delUser) => {
