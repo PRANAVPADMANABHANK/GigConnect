@@ -269,7 +269,7 @@ const Orders = () => {
                             variant="contained"
                             color="primary"
                             onClick={() => handleSubmissionConfirmation(order)}
-                            disabled={isSubmissionDisabled}
+                            // disabled={isSubmissionDisabled}
                           >
                             Submit Work
                           </Button>

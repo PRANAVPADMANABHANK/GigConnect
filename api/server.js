@@ -14,6 +14,8 @@ import chatRoute from "./src/adapters/routes/chat.route.js"
 import messagesRoutes from "./src/adapters/routes/messages.route.js"
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import http from 'http';
+import { Server as SocketServer } from 'socket.io';
 
 const app = express();
 
@@ -58,7 +60,50 @@ app.use((err, req, res, next) => {
 });
 
 //port connection
-app.listen(process.env.PORT, () => {
+// app.listen(process.env.PORT, () => {
+//   connect();
+//   console.log("Backend server is running!");
+// });
+
+const httpServer = http.createServer(app);
+const server = httpServer.listen(process.env.PORT, () => {
   connect();
-  console.log("Backend server is running!");
+  console.log('Backend server is running!');
 });
+
+const io = new SocketServer(httpServer, {
+  pingTimeout:60000,
+  cors: {
+    origin: 'http://localhost:5173',
+  },
+});
+
+io.on("connection", (socket)=>{
+  console.log('connected to socket.io')
+
+  socket.on('setup', (userData) => {
+    socket.join(userData._id);
+    socket.emit("connected");
+  })
+
+  socket.on('join chat', (room)=>{
+    socket.join(room)
+    console.log("User Joined Room: " + room)   
+  })
+
+  socket.on('typing',(room)=>socket.in(room).emit("typing"))
+  socket.on('stop typing',(room)=>socket.in(room).emit("stop typing"))
+
+  socket.on("new message", (newMessageRecieved) => {
+    // console.log(newMessageRecieved.data.chat.users, "newMessageRecieved")
+    console.log(newMessageRecieved, "sender")
+    var chat = newMessageRecieved.data.chat;
+
+    if (!chat.users) return console.log("chat.users not defined");
+
+    chat.users.forEach((user) => {
+      if (user._id == newMessageRecieved.data.sender._id) return;
+      socket.in(user._id).emit("message recieved", newMessageRecieved);
+    });
+  });
+})

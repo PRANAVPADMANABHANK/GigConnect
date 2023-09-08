@@ -15,12 +15,20 @@ import ProfileModal from "../miscellaneous/ProfileModal";
 import UpdateGroupChatModal from "../miscellaneous/UpdateGroupChatModal";
 import newRequest from "../../utils/newRequest";
 import ScrollableChat from "./ScrollableChat";
+import io from "socket.io-client";
+
+const ENDPOINT = "http://localhost:8800";
+var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
+  const [socketConnected, setSocketConnected] = useState(false);
   const { user, selectedChat, setSelectedChat } = useChatState();
+  const [typing, setTyping] = useState(false);
+  const [istyping, setIsTyping] = useState(false);
+
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -31,33 +39,62 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       const { data } = await newRequest.get(`/message/${selectedChat._id}`);
       setMessages(data);
       setLoading(false);
+
+      socket.emit("join chat", selectedChat._id);
     } catch (error) {
       console.log("Error Occured");
     }
   };
 
   useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connected", () => setSocketConnected(true));
+    socket.on('typing', ()=> setTyping(true))
+    socket.on('stop typing', ()=> setIsTyping(false))
+  }, []);
+
+  useEffect(() => {
     fetchMessages();
+    selectedChatCompare = selectedChat;
   }, [selectedChat]);
+
+  useEffect(() => {
+    socket.on('message recieved', (newMessageRecieved) => {
+      console.log(newMessageRecieved.data.chat._id,"newMessageRecieved")
+      if (
+        !selectedChatCompare || selectedChatCompare._id !== newMessageRecieved.data.chat._id
+      ) {
+        //notification
+      } else {
+        setMessages([...messages, newMessageRecieved]);
+      }
+    });
+  });
 
   const sendMessage = async (event) => {
     console.log(event.target.value, "ooo");
     if (event.key === "Enter" && newMessage) {
       try {
         setMessages("");
-        console.log(newMessage, "newMessage");
+        console.log(newMessage, "new message");
         const response = await newRequest.post("/message", {
           content: newMessage,
           chatId: selectedChat._id,
         });
 
         setNewMessage("");
+        socket.emit("new message", response)
+
         setMessages([...messages, response.data]);
       } catch (error) {
         console.log("Error Occured!");
       }
     }
   };
+
+  
+
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
   };
@@ -106,7 +143,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               <CircularProgress size={70} thickness={2} />
             ) : (
               <>
-                <div className="messages"><ScrollableChat messages={messages}/></div>
+                <div className="messages">
+                  <ScrollableChat messages={messages} />
+                </div>
               </>
             )}
           </Box>
