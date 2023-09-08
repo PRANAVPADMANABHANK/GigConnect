@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const newRequest = axios.create({
-  baseURL: "http://gigconnect.stepups.live/api/",
+  baseURL: "https://gigconnect.stepups.live/api/",
   withCredentials: true,
 });
 
