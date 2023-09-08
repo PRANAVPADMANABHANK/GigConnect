@@ -43,7 +43,7 @@ const Home = () => {
               Protected payments, every time
             </div>
             <p>
-              Always know what you'll pay upfront. Your payment isn't released
+              Always know what youll pay upfront. Your payment isnt released
               until you approve the work.
             </p>
             <div className="title">
