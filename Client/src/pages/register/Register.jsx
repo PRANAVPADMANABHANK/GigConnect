@@ -18,7 +18,6 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-
   const navigate = useNavigate();
   const handleChange = (e) => {
     setUser((prev) => {
@@ -34,24 +33,22 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    console.log(file,"file")
+
+    console.log(file, "file");
     const url = await upload(file);
-    console.log("kkkkkk")
-    console.log(url,"url")
+    console.log("kkkkkk");
+    console.log(url, "url");
 
     try {
-      // Send a POST request to the registration endpoint
       const response = await newRequest.post("auth/register", {
         ...user,
         img: url,
       });
-      if (response.data.success) {
-        // Registration was successful, navigate to the login page
+      if (response.data == "User has been created.") {
         navigate("/login");
       }
     } catch (err) {
-      console.log(err.response,"error.response")
+      console.log(err.response, "error.response");
       // Handle validation errors from the backend
       if (err.response && err.response.status === 400) {
         const errorData = err.response.data;
@@ -94,7 +91,8 @@ const Register = () => {
             placeholder="password"
             onChange={handleChange}
           />
-           <label htmlFor="">Confirm Password</label> {/* Add confirm password input */}
+          <label htmlFor="">Confirm Password</label>{" "}
+          {/* Add confirm password input */}
           <input
             name="confirmPassword"
             type="password"

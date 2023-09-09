@@ -34,7 +34,7 @@ const connect = async () => {
 };
 
 //middleware
-app.use(cors({ origin: ["https://localhost:5173", "https://gigconnect.stepups.live"], credentials: true })); //"origin" => represents we are connecting frontend to backend using cors library. "credential" => represents passing cookie from frontend to backend.
+app.use(cors({ origin: ["http://localhost:5173", "https://gigconnect.stepups.live"], credentials: true })); // ["https://localhost:5173", "https://gigconnect.stepups.live"]  "origin" => represents we are connecting frontend to backend using cors library. "credential" => represents passing cookie from frontend to backend.
 app.use(express.json()); //this will allow to pass any json from the client side
 app.use(cookieParser()); //to use cookies in the client side
 
