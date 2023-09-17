@@ -67,7 +67,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       ) {
         //notification
       } else {
-        setMessages([...messages, newMessageRecieved]);
+        setMessages([...messages, newMessageRecieved]); 
       }
     });
   });
