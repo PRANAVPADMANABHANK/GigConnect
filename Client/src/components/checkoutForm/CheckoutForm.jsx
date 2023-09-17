@@ -61,7 +61,7 @@ const CheckoutForm = () => {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://gigconnect.stepups.live/success",
+        return_url: "https://gigconnect.stepups.live/success",
       },
     });
     console.log(error,"llllllll")
